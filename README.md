@@ -1,10 +1,10 @@
-#Power Supply
+# Power Supply
 
 This project is a custom hardware development for a variable power supply based on EEVBlog uSupply ([https://www.eevblog.com/projects/usupply/])
 
 The microcontroller used is the STM32F030C6T6. This repository contains the source code for the power supply written using the IAR Embedded Workbench IDE. 
 
-##Power Supply Features: 
+## Power Supply Features: 
 * 0 - 15V Output Voltage
 * 0 - 1A Output Current
 * Output Isolating Relay
