@@ -1,0 +1,103 @@
+/******************************************************************************
+* @file           : hw_config.h
+* @brief          : contains hardware pin configuration
+******************************************************************************/
+
+#ifndef __PINS_CONFIG_H__
+#define __PINS_CONFIG_H__
+
+// ADC Pins
+#define VREF_FILT_Pin 					GPIO_PIN_0
+#define VREF_FILT_GPIO_Port 			        GPIOA
+
+#define VIN_ADC_Pin 					GPIO_PIN_1
+#define VIN_ADC_GPIO_Port 				GPIOA
+
+#define VSW_ADC_Pin 					GPIO_PIN_2
+#define VSW_ADC_GPIO_Port 				GPIOA
+
+#define VOUT_ADC_Pin 					GPIO_PIN_3
+#define VOUT_ADC_GPIO_Port 				GPIOA
+
+#define I_SENSE_Pin 					GPIO_PIN_4
+#define I_SENSE_GPIO_Port 				GPIOA
+
+#define VINL_ADC_Pin 					GPIO_PIN_5
+#define VINL_ADC_GPIO_Port 				GPIOA
+
+#define ISRC_ADC_Pin 					GPIO_PIN_6
+#define ISRC_ADC_GPIO_Port 				GPIOA
+
+// Display Pins
+#define DISP_BKLIGHT_Pin 				GPIO_PIN_7
+#define DISP_BKLIGHT_GPIO_Port 			        GPIOA
+
+#define DISP_RST_Pin 					GPIO_PIN_0
+#define DISP_RST_GPIO_Port 				GPIOB
+
+#define DISP_DC_Pin 					GPIO_PIN_1
+#define DISP_DC_GPIO_Port 				GPIOB
+
+#define DISP_CS_Pin 					GPIO_PIN_2
+#define DISP_CS_GPIO_Port 				GPIOB
+
+#define DISP_SCK_Pin 					GPIO_PIN_13
+#define DISP_SCK_GPIO_Port 				GPIOB
+
+#define DISP_MISO_Pin 					GPIO_PIN_14
+#define DISP_MISO_GPIO_Port 			        GPIOB
+
+#define DISP_MOSI_Pin 					GPIO_PIN_15
+#define DISP_MOSI_GPIO_Port 			        GPIOB
+
+//PWM Pins
+#define VSET_PWM_Pin 					GPIO_PIN_8
+#define VSET_PWM_GPIO_Port 				GPIOA
+
+#define ISET_PWM_Pin 					GPIO_PIN_9
+#define ISET_PWM_GPIO_Port 				GPIOA
+
+#define VSW_PWM_Pin 					GPIO_PIN_10
+#define VSW_PWM_GPIO_Port 				GPIOA
+
+// Encoder and Switch Pins
+#define ENCB_Pin 					GPIO_PIN_11
+#define ENCB_GPIO_Port 					GPIOA
+
+#define ENCA_Pin 					GPIO_PIN_12
+#define ENCA_GPIO_Port 					GPIOA
+
+#define ENC_SW_Pin 					GPIO_PIN_6
+#define ENC_SW_GPIO_Port 				GPIOF
+
+#define SW1_Pin 					GPIO_PIN_7
+#define SW1_GPIO_Port 					GPIOF
+
+// Enable Pins
+#define OUT_EN_Pin 					GPIO_PIN_15
+#define OUT_EN_GPIO_Port 				GPIOA
+
+#define VSW_EN_Pin 					GPIO_PIN_9
+#define VSW_EN_GPIO_Port 				GPIOB
+
+/* UART Config ****************************************************************/
+#define BAUDRATE                                        115200
+#define USARTx                                          USART1
+#define UART_TX_Pin 					GPIO_PIN_6
+#define UART_GPIO_Port 					GPIOB
+#define UART_RX_Pin 					GPIO_PIN_7
+#define UART_AF                     	                GPIO_AF0_USART1
+
+#define USARTx_IRQn                              	USART1_IRQn
+#define USARTx_IRQHandler                        	USART1_IRQHandler
+#define USARTx_DMA_TX_IRQn                              DMA1_Channel2_3_IRQn
+#define USARTx_DMA_RX_IRQn                              DMA1_Channel2_3_IRQn
+
+#define USARTx_GPIO_PORT_CLK_ENABLE()                   __HAL_RCC_GPIOB_CLK_ENABLE()
+#define USARTx_CLK_ENABLE()                             __HAL_RCC_USART1_CLK_ENABLE()
+#define DMAx_CLK_ENABLE()                               __HAL_RCC_DMA1_CLK_ENABLE()
+
+#define USARTx_TX_DMA_CHANNEL                           DMA1_Channel2 
+#define USARTx_RX_DMA_CHANNEL                           DMA1_Channel3
+
+#endif
