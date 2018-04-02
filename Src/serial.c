@@ -38,6 +38,7 @@ void StartSerialTask(void const * argument)
   sprintf(str, "\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
   UART_print(str);
   
+  // Set UART DMA to receive into CmdBuffer
   HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)CmdBuffer, COMMAND_LENGTH);
   
   /* Infinite loop */
@@ -46,6 +47,7 @@ void StartSerialTask(void const * argument)
     process_command();
       
     // print out adc values and button states
+    
     
     // delay in ms
     osDelay(50);
@@ -76,6 +78,12 @@ void process_command(void)
         case SET_V:
           break;
         case SET_I:
+          break;
+        case VSW_EN:
+          break;
+        case OUT_EN:
+          break;
+        case DISP_BKLIGHT_EN:
           break;
       }
       
