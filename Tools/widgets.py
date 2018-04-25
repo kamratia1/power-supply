@@ -33,7 +33,7 @@ class Slider(object):
     
         # Slider Value
         self.sliderValue = QtGui.QLabel()
-        self.sliderValue.setText("0/4095 (0V)")
+        self.sliderValue.setText("0/" + str(maxValue) + " (0V)")
         self.slider.valueChanged.connect(self.update_slider_value)
 
         layout.addWidget(self.sliderLabel, row, 0)

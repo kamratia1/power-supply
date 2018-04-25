@@ -3,19 +3,21 @@
 * Description        : Code for initialising and setting up UART peripheral
 ******************************************************************************/
 
+/* Includes ------------------------------------------------------------------*/
 #include "hw_config.h"
 #include "stm32f0xx_hal.h"
 #include "main.h"
 #include "uart.h"
 #include "string.h"
 
-/* External Variables */
-extern UART_HandleTypeDef UartHandle;
+/* Private Variables ---------------------------------------------------------*/
+UART_HandleTypeDef UART_Handle;
+
 
 /* Private Function Prototypes*/
 
 
-void UART_Init( void )
+void UART_Init(void)
 {
   // Enable GPIO and UART Clocks
   USARTx_GPIO_PORT_CLK_ENABLE();
@@ -31,52 +33,52 @@ void UART_Init( void )
   HAL_GPIO_Init(UART_GPIO_Port, &GPIO_InitStruct);
 
   // Set Up UART
-  UartHandle.Instance = USARTx;
-  UartHandle.Init.BaudRate = BAUDRATE;
-  UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
-  UartHandle.Init.StopBits = UART_STOPBITS_1;
-  UartHandle.Init.Parity = UART_PARITY_NONE;
-  UartHandle.Init.Mode = UART_MODE_TX_RX;
-  UartHandle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  UartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
-  HAL_UART_Init(&UartHandle);
+  UART_Handle.Instance = USARTx;
+  UART_Handle.Init.BaudRate = BAUDRATE;
+  UART_Handle.Init.WordLength = UART_WORDLENGTH_8B;
+  UART_Handle.Init.StopBits = UART_STOPBITS_1;
+  UART_Handle.Init.Parity = UART_PARITY_NONE;
+  UART_Handle.Init.Mode = UART_MODE_TX_RX;
+  UART_Handle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  UART_Handle.Init.OverSampling = UART_OVERSAMPLING_16;
+  HAL_UART_Init(&UART_Handle);
   
   // Config NVIC for UART
   HAL_NVIC_SetPriority(USARTx_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(USARTx_IRQn);
   
   // Configure DMA
-  static DMA_HandleTypeDef hdma_tx;
-  static DMA_HandleTypeDef hdma_rx;
+  static DMA_HandleTypeDef DMATX_Handle;
+  static DMA_HandleTypeDef DMARX_Handle;
   
   // Enable DMA clock
   DMAx_CLK_ENABLE();
   
   // Configure the DMA handler for reception process
-  hdma_tx.Instance                 = USARTx_TX_DMA_CHANNEL;
-  hdma_tx.Init.Direction           = DMA_MEMORY_TO_PERIPH;
-  hdma_tx.Init.PeriphInc           = DMA_PINC_DISABLE;
-  hdma_tx.Init.MemInc              = DMA_MINC_ENABLE;
-  hdma_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-  hdma_tx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
-  hdma_tx.Init.Mode                = DMA_NORMAL;
-  hdma_tx.Init.Priority            = DMA_PRIORITY_LOW;
-  HAL_DMA_Init(&hdma_tx);
+  DMATX_Handle.Instance                 = USARTx_TX_DMA_CHANNEL;
+  DMATX_Handle.Init.Direction           = DMA_MEMORY_TO_PERIPH;
+  DMATX_Handle.Init.PeriphInc           = DMA_PINC_DISABLE;
+  DMATX_Handle.Init.MemInc              = DMA_MINC_ENABLE;
+  DMATX_Handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  DMATX_Handle.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
+  DMATX_Handle.Init.Mode                = DMA_NORMAL;
+  DMATX_Handle.Init.Priority            = DMA_PRIORITY_LOW;
+  HAL_DMA_Init(&DMATX_Handle);
 
   // Configure the DMA handler for reception process
-  hdma_rx.Instance                 = USARTx_RX_DMA_CHANNEL;
-  hdma_rx.Init.Direction           = DMA_PERIPH_TO_MEMORY;
-  hdma_rx.Init.PeriphInc           = DMA_PINC_DISABLE;
-  hdma_rx.Init.MemInc              = DMA_MINC_ENABLE;
-  hdma_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-  hdma_rx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
-  hdma_rx.Init.Mode                = DMA_NORMAL;
-  hdma_rx.Init.Priority            = DMA_PRIORITY_HIGH;
-  HAL_DMA_Init(&hdma_rx);
+  DMARX_Handle.Instance                 = USARTx_RX_DMA_CHANNEL;
+  DMARX_Handle.Init.Direction           = DMA_PERIPH_TO_MEMORY;
+  DMARX_Handle.Init.PeriphInc           = DMA_PINC_DISABLE;
+  DMARX_Handle.Init.MemInc              = DMA_MINC_ENABLE;
+  DMARX_Handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  DMARX_Handle.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
+  DMARX_Handle.Init.Mode                = DMA_NORMAL;
+  DMARX_Handle.Init.Priority            = DMA_PRIORITY_HIGH;
+  HAL_DMA_Init(&DMARX_Handle);
   
    // Associate the initialized DMA handle to the UART handle
-  __HAL_LINKDMA(&UartHandle, hdmatx, hdma_tx);
-  __HAL_LINKDMA(&UartHandle, hdmarx, hdma_rx);
+  __HAL_LINKDMA(&UART_Handle, hdmatx, DMATX_Handle);
+  __HAL_LINKDMA(&UART_Handle, hdmarx, DMARX_Handle);
   
   // Configure Interrupts
   // NVIC configuration for DMA transfer complete interrupt (USART1_TX)
@@ -90,10 +92,20 @@ void UART_Init( void )
 }
 
 // Transmit string of any length onto UART peripheral
-void UART_print(char out[])
+void UART_Print(char out[])
 {
   //if UART transmit is busy, then wait before transmitting character
-  while (HAL_UART_GetState(&UartHandle) == HAL_UART_STATE_BUSY_TX);    
-  HAL_UART_Transmit(&UartHandle, (uint8_t *) out, strlen(out), 10); 
+  while (HAL_UART_GetState(&UART_Handle) == HAL_UART_STATE_BUSY_TX);    
+  HAL_UART_Transmit(&UART_Handle, (uint8_t *) out, strlen(out), 10); 
 }
 
+void UART_Receive_DMA_Stop(void)
+{
+  // Stope character reception
+  HAL_UART_DMAStop(&UART_Handle);
+}
+
+void UART_Receive_DMA_Start(uint8_t buffer[], uint8_t len)
+{
+  HAL_UART_Receive_DMA(&UART_Handle, (uint8_t *)buffer, len);
+}

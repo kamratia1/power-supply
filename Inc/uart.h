@@ -7,11 +7,11 @@
 #define UART_H_
 
 /* Definitions */
-#define RXBUFFERSIZE    32
 
 /* Public Function Prototypes */
 void UART_Init(void);
-void UART_print(char out[]);
-void UART_putchar(char c);
+void UART_Print(char out[]);
+void UART_Receive_DMA_Stop(void);
+void UART_Receive_DMA_Start(uint8_t buffer[], uint8_t len);
 
 #endif /* UART_H_ */

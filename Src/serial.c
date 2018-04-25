@@ -9,45 +9,54 @@
 #include "uart.h"
 #include "stm32f0xx_hal.h"
 #include "string.h"
+#include "enable.h"
+#include "pwm.h"
+#include "hw_config.h"
+#include "adc.h"
 
-/* Private variables ---------------------------------------------------------*/
-#define COMMAND_LENGTH       16
-
-UART_HandleTypeDef UartHandle;
-uint8_t RxBuffer[RXBUFFERSIZE];
-uint8_t CmdBuffer[COMMAND_LENGTH];
-char str[64];
+/* Definitions ---------------------------------------------------------------*/
+#define RX_BUFFER_SIZE       16
 
 enum COMMANDS
 {
   SET_VSW=1,
   SET_V,
   SET_I,
-  VSW_EN,
   OUT_EN,
+  VSW_EN,
   DISP_BKLIGHT_EN,
   
   CMD_NUMBER
 };
 
+/* Private variables ---------------------------------------------------------*/
+extern UART_HandleTypeDef UART_Handle;
+uint8_t RxBuffer[RX_BUFFER_SIZE];
+char str[64];
+uint16_t adc_values[6];
+
+/* Private Function Prototypes -----------------------------------------------*/
 static void process_command(void);
 
-/* StartDefaultTask function */
+
 void StartSerialTask(void const * argument)
 {
   sprintf(str, "\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
-  UART_print(str);
+  UART_Print(str);
   
-  // Set UART DMA to receive into CmdBuffer
-  HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)CmdBuffer, COMMAND_LENGTH);
+  // Set UART DMA to receive into RxBuffer
+  UART_Receive_DMA_Start((uint8_t *)RxBuffer, RX_BUFFER_SIZE);
   
   /* Infinite loop */
   for(;;)
   {    
     process_command();
-      
-    // print out adc values and button states
     
+
+    ADC_PrintReadings();
+    
+    // print out adc values
+    //UART_Print("k,1000,1,20,34,53,23,42,23,2\n");
     
     // delay in ms
     osDelay(50);
@@ -60,28 +69,33 @@ void process_command(void)
   int val = 0;                  // value to set for command
   
   // stop character reception
-  HAL_UART_DMAStop(&UartHandle);
+  UART_Receive_DMA_Stop();
   
   // Process the command buffer
-  for(int i=0; i<COMMAND_LENGTH; i++)
+  for(int i=0; i<RX_BUFFER_SIZE; i++)
   {
-    if (CmdBuffer[i] == '+')
+    if (RxBuffer[i] == '+')
     {
       // Parse the command buffer and extract the command number and value
-      sscanf((char*)CmdBuffer, "cmd,%d,%d,+", &cmd_number, &val);
+      sscanf((char*)RxBuffer, "cmd,%d,%d,+", &cmd_number, &val);
       
       // decide what to do based on command
       switch(cmd_number)
       {
         case SET_VSW:
+          PWM_setDuty(VSW_PWM_Pin, val);
           break;
         case SET_V:
+          PWM_setDuty(VSET_PWM_Pin, val);
           break;
         case SET_I:
+          PWM_setDuty(ISET_PWM_Pin, val);
           break;
         case VSW_EN:
+          Enable_VSW((GPIO_PinState) val);
           break;
         case OUT_EN:
+          Enable_Output((GPIO_PinState) val);          
           break;
         case DISP_BKLIGHT_EN:
           break;
@@ -96,12 +110,12 @@ void process_command(void)
       {
         sprintf(str, "invalid command!\r\n");
       }
-      UART_print(str);          
+      UART_Print(str);          
     }
   }
   
   // Reset the Receive Buffer and restart DMA
-  memset(CmdBuffer, 0, COMMAND_LENGTH);
-  HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)CmdBuffer, COMMAND_LENGTH);          
+  memset(RxBuffer, 0, RX_BUFFER_SIZE);
+  UART_Receive_DMA_Start((uint8_t *)RxBuffer, RX_BUFFER_SIZE);          
 }
 

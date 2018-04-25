@@ -37,7 +37,7 @@
 #include "cmsis_os.h"
 
 /* External variables --------------------------------------------------------*/
-extern UART_HandleTypeDef UartHandle;
+extern UART_HandleTypeDef UART_Handle;
 extern TIM_HandleTypeDef htim17;
 
 /******************************************************************************/
@@ -89,12 +89,12 @@ void TIM17_IRQHandler(void)
 */
 void USART1_IRQHandler(void)
 {
-  HAL_UART_IRQHandler(&UartHandle);
+  HAL_UART_IRQHandler(&UART_Handle);
 }
 
 
 void DMA1_Channel2_3_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(UartHandle.hdmatx);
-  HAL_DMA_IRQHandler(UartHandle.hdmarx);
+  HAL_DMA_IRQHandler(UART_Handle.hdmatx);
+  HAL_DMA_IRQHandler(UART_Handle.hdmarx);
 }

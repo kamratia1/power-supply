@@ -9,24 +9,35 @@
 // ADC Pins
 #define VREF_FILT_Pin 					GPIO_PIN_0
 #define VREF_FILT_GPIO_Port 			        GPIOA
+#define VREF_FILT_ADC_CHANNEL                           ADC_CHANNEL_0
 
 #define VIN_ADC_Pin 					GPIO_PIN_1
 #define VIN_ADC_GPIO_Port 				GPIOA
+#define VIN_ADC_CHANNEL                                 ADC_CHANNEL_1
 
 #define VSW_ADC_Pin 					GPIO_PIN_2
 #define VSW_ADC_GPIO_Port 				GPIOA
+#define VSW_ADC_CHANNEL                                 ADC_CHANNEL_2
 
 #define VOUT_ADC_Pin 					GPIO_PIN_3
 #define VOUT_ADC_GPIO_Port 				GPIOA
+#define VOUT_ADC_CHANNEL                                ADC_CHANNEL_3
 
 #define I_SENSE_Pin 					GPIO_PIN_4
 #define I_SENSE_GPIO_Port 				GPIOA
+#define I_SENSE_ADC_CHANNEL                             ADC_CHANNEL_4
 
 #define VINL_ADC_Pin 					GPIO_PIN_5
 #define VINL_ADC_GPIO_Port 				GPIOA
+#define VINL_ADC_CHANNEL                                ADC_CHANNEL_5
 
 #define ISRC_ADC_Pin 					GPIO_PIN_6
 #define ISRC_ADC_GPIO_Port 				GPIOA
+#define ISRC_ADC_CHANNEL                                ADC_CHANNEL_6
+
+#define ADC_GPIO_CLK_ENABLE()                           __HAL_RCC_GPIOA_CLK_ENABLE()
+#define ADC_CLK_ENABLE()                                __HAL_RCC_ADC1_CLK_ENABLE()
+#define ADC_GPIO_Port                                   GPIOA
 
 // Display Pins
 #define DISP_BKLIGHT_Pin 				GPIO_PIN_7
@@ -51,14 +62,23 @@
 #define DISP_MOSI_GPIO_Port 			        GPIOB
 
 //PWM Pins
+#define TIM_PWM_CLK_ENABLE()                           __HAL_RCC_TIM1_CLK_ENABLE()
+#define TIM_PWM_AF                                     GPIO_AF2_TIM1
+
 #define VSET_PWM_Pin 					GPIO_PIN_8
 #define VSET_PWM_GPIO_Port 				GPIOA
+#define VSET_PWM_GPIO_CLK_ENABLE()                      __HAL_RCC_GPIOA_CLK_ENABLE()
+#define VSET_PWM_TIM_CHANNEL                            TIM_CHANNEL_1
 
 #define ISET_PWM_Pin 					GPIO_PIN_9
 #define ISET_PWM_GPIO_Port 				GPIOA
+#define ISET_PWM_GPIO_CLK_ENABLE()                      __HAL_RCC_GPIOA_CLK_ENABLE()
+#define ISET_PWM_TIM_CHANNEL                            TIM_CHANNEL_2
 
 #define VSW_PWM_Pin 					GPIO_PIN_10
 #define VSW_PWM_GPIO_Port 				GPIOA
+#define VSW_PWM_GPIO_CLK_ENABLE()                       __HAL_RCC_GPIOA_CLK_ENABLE()
+#define VSW_PWM_TIM_CHANNEL                             TIM_CHANNEL_3
 
 // Encoder and Switch Pins
 #define ENCB_Pin 					GPIO_PIN_11
@@ -76,9 +96,11 @@
 // Enable Pins
 #define OUT_EN_Pin 					GPIO_PIN_15
 #define OUT_EN_GPIO_Port 				GPIOA
+#define OUT_EN_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOA_CLK_ENABLE()
 
 #define VSW_EN_Pin 					GPIO_PIN_9
 #define VSW_EN_GPIO_Port 				GPIOB
+#define VSW_EN_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOB_CLK_ENABLE()
 
 /* UART Config ****************************************************************/
 #define BAUDRATE                                        115200

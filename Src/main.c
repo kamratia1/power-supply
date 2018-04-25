@@ -9,6 +9,10 @@
 #include "cmsis_os.h"
 #include "uart.h"
 #include "rtos.h"
+#include "enable.h"
+#include "pwm.h"
+#include "hw_config.h"
+#include "adc.h"
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -27,6 +31,13 @@ int main(void)
   
   /* Initialise Hardware peripherals */
   UART_Init();
+  Enable_Init();
+  PWM_Init();
+  ADC_Init();
+  
+  PWM_setDuty(VSET_PWM_Pin, 0);
+  PWM_setDuty(ISET_PWM_Pin, 0);
+  PWM_setDuty(VSW_PWM_Pin, 0);
   
   /* Call init function for freertos objects (in freertos.c) */
   RTOS_Init();
