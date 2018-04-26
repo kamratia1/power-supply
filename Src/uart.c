@@ -8,7 +8,7 @@
 #include "stm32f0xx_hal.h"
 #include "main.h"
 #include "uart.h"
-#include "string.h"
+#include "printf.h"
 
 /* Private Variables ---------------------------------------------------------*/
 UART_HandleTypeDef UART_Handle;

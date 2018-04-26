@@ -41,8 +41,7 @@ static void process_command(void);
 
 void StartSerialTask(void const * argument)
 {
-  sprintf(str, "\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
-  UART_Print(str);
+  UART_Print("\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
   
   // Set UART DMA to receive into RxBuffer
   UART_Receive_DMA_Start((uint8_t *)RxBuffer, RX_BUFFER_SIZE);
@@ -50,16 +49,9 @@ void StartSerialTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {    
-    process_command();
-    
-
-    ADC_PrintReadings();
-    
-    // print out adc values
-    //UART_Print("k,1000,1,20,34,53,23,42,23,2\n");
-    
-    // delay in ms
-    osDelay(50);
+    process_command();    // Process Command
+    ADC_PrintReadings();  // Print all ADC values      
+    osDelay(50);          // 50ms delay
   }
 }
 
@@ -77,7 +69,7 @@ void process_command(void)
     if (RxBuffer[i] == '+')
     {
       // Parse the command buffer and extract the command number and value
-      sscanf((char*)RxBuffer, "cmd,%d,%d,+", &cmd_number, &val);
+      sscanf((char*)RxBuffer, "cmd,%d,%d,+", &cmd_number, &val);        // TODO - rewrite for lower flash footprint
       
       // decide what to do based on command
       switch(cmd_number)
@@ -104,13 +96,12 @@ void process_command(void)
       // print out command back onto serial or specify invalid command
       if (cmd_number > 0 && cmd_number <= CMD_NUMBER)
       {
-        sprintf(str, "ok,cmd=%d val=%d\r\n", cmd_number, val);
+        sprintf(str, "ok,cmd=%d val=%d\r\n", cmd_number, val);  // TODO - rewrite for lower flash footprint
       }
       else
       {
-        sprintf(str, "invalid command!\r\n");
-      }
-      UART_Print(str);          
+        UART_Print("Invalid Command!\r\n");
+      }        
     }
   }
   

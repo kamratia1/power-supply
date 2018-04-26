@@ -32,7 +32,7 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state>Full formatting, with multibyte support.</state>
+                    <state>Automatic choice of formatter, with multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
@@ -182,7 +182,7 @@
                 <option>
                     <name>OGScanfVariant</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OGScanfMultibyteSupport</name>
@@ -1087,6 +1087,9 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\main.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\printf.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\rtos.c</name>

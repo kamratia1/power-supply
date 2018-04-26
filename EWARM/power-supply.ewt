@@ -1227,6 +1227,9 @@
                     <name>$PROJ_DIR$\..\Src\main.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\Src\printf.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Src\rtos.c</name>
                 </file>
             </group>

@@ -48,7 +48,7 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
-  //while (1)
+  while (1)
   {
   }
 
