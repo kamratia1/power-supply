@@ -1062,7 +1062,16 @@
                     <name>$PROJ_DIR$\..\Src\adc.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\Src\buttons.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\control.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Src\enable.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\encoder.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\pwm.c</name>
@@ -1086,6 +1095,9 @@
                     <name>$PROJ_DIR$\..\Inc\hw_config.h</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\Src\interrupts.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Src\main.c</name>
                 </file>
                 <file>
@@ -1093,6 +1105,9 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\rtos.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\system_state.c</name>
                 </file>
             </group>
             <group>
@@ -1113,6 +1128,15 @@
             <group>
                 <name>UI</name>
             </group>
+            <file>
+                <name>$PROJ_DIR$\..\Src\graphics.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\lcd.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\ui.c</name>
+            </file>
         </group>
     </group>
     <group>

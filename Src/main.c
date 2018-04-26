@@ -13,6 +13,8 @@
 #include "pwm.h"
 #include "hw_config.h"
 #include "adc.h"
+#include "buttons.h"
+#include "encoder.h"
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -34,6 +36,8 @@ int main(void)
   Enable_Init();
   PWM_Init();
   ADC_Init();
+  Buttons_Init();
+  Encoder_Init();
   
   PWM_setDuty(VSET_PWM_Pin, 0);
   PWM_setDuty(ISET_PWM_Pin, 0);

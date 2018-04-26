@@ -13,7 +13,7 @@
 /* Function prototypes -------------------------------------------------------*/
 void RTOS_Init(void);
 void StartSerialTask(void const * argument);
-//void StartUiTask(void const * argument);
-//void StartControlTask(void const * argument);
+void StartUiTask(void const * argument);
+void StartControlTask(void const * argument);
 
 #endif

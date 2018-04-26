@@ -7,8 +7,8 @@
 #include "rtos.h"
 
 /* Variables -----------------------------------------------------------------*/
-//osThreadId uiTaskHandle;
-//osThreadId controlTaskHandle;
+osThreadId uiTaskHandle;
+osThreadId controlTaskHandle;
 osThreadId serialTaskHandle;
 
 /* Hook prototypes */
@@ -24,13 +24,13 @@ void RTOS_Init(void) {
 
   /* Create the thread(s) */
   
-  //osThreadDef(uiTask, StartUiTask, osPriorityNormal, 0, 48);
-  //uiTaskHandle = osThreadCreate(osThread(uiTask), NULL);
+  osThreadDef(uiTask, StartUiTask, osPriorityNormal, 0, 48);
+  uiTaskHandle = osThreadCreate(osThread(uiTask), NULL);
   
-  //osThreadDef(controlTask, StartControlTask, osPriorityNormal, 0, 48);
-  //controlTaskHandle = osThreadCreate(osThread(controlTask), NULL);
+  osThreadDef(controlTask, StartControlTask, osPriorityNormal, 0, 48);
+  controlTaskHandle = osThreadCreate(osThread(controlTask), NULL);
 
-  osThreadDef(serialTask, StartSerialTask, osPriorityNormal, 0, 96);
+  osThreadDef(serialTask, StartSerialTask, osPriorityNormal, 0, 48);
   serialTaskHandle = osThreadCreate(osThread(serialTask), NULL);
 
   /* add queues, ... */

@@ -40,26 +40,36 @@
 #define ADC_GPIO_Port                                   GPIOA
 
 // Display Pins
+#define DISP_BKLIGHT_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOA_CLK_ENABLE()
 #define DISP_BKLIGHT_Pin 				GPIO_PIN_7
 #define DISP_BKLIGHT_GPIO_Port 			        GPIOA
 
+#define DISP_RST_GPIO_CLK_ENABLE()                      __HAL_RCC_GPIOB_CLK_ENABLE()
 #define DISP_RST_Pin 					GPIO_PIN_0
 #define DISP_RST_GPIO_Port 				GPIOB
 
+#define DISP_DC_GPIO_CLK_ENABLE()                       __HAL_RCC_GPIOB_CLK_ENABLE()
 #define DISP_DC_Pin 					GPIO_PIN_1
 #define DISP_DC_GPIO_Port 				GPIOB
 
+#define DISP_CS_GPIO_CLK_ENABLE()                       __HAL_RCC_GPIOB_CLK_ENABLE()
 #define DISP_CS_Pin 					GPIO_PIN_2
 #define DISP_CS_GPIO_Port 				GPIOB
 
+#define DISP_SPIx                                       SPI1
+#define SPIx_PERIPH_CLK_ENABLE()                        __HAL_RCC_SPI1_CLK_ENABLE()
 #define DISP_SCK_Pin 					GPIO_PIN_13
 #define DISP_SCK_GPIO_Port 				GPIOB
-
-#define DISP_MISO_Pin 					GPIO_PIN_14
-#define DISP_MISO_GPIO_Port 			        GPIOB
+#define DISP_SCK_GPIO_CLK_ENABLE()                      __HAL_RCC_GPIOB_CLK_ENABLE()
+#define DISP_SCK_Alternate_Function                     GPIO_AF0_SPI1      
 
 #define DISP_MOSI_Pin 					GPIO_PIN_15
 #define DISP_MOSI_GPIO_Port 			        GPIOB
+#define DISP_MOSI_GPIO_CLK_ENABLE()                     __HAL_RCC_GPIOB_CLK_ENABLE()
+#define DISP_MOSI_Alternate_Function                    GPIO_AF0_SPI1
+
+#define DISP_MISO_Pin 					GPIO_PIN_14
+#define DISP_MISO_GPIO_Port 			        GPIOB
 
 //PWM Pins
 #define TIM_PWM_CLK_ENABLE()                           __HAL_RCC_TIM1_CLK_ENABLE()
@@ -83,15 +93,27 @@
 // Encoder and Switch Pins
 #define ENCB_Pin 					GPIO_PIN_11
 #define ENCB_GPIO_Port 					GPIOA
-
+#define ENCB_GPIO_CLK_ENABLE()                          __HAL_RCC_GPIOA_CLK_ENABLE()
 #define ENCA_Pin 					GPIO_PIN_12
 #define ENCA_GPIO_Port 					GPIOA
+#define ENCA_GPIO_CLK_ENABLE()                          __HAL_RCC_GPIOA_CLK_ENABLE()
+#define ENCA_B_IRQn                                     EXTI4_15_IRQn
+#define ENCA_B_IRQHandler                               EXTI4_15_IRQHandler
 
 #define ENC_SW_Pin 					GPIO_PIN_6
 #define ENC_SW_GPIO_Port 				GPIOF
+#define ENC_SW_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOF_CLK_ENABLE()
+#define ENC_SW_IRQn                                     EXTI4_15_IRQn
+#define ENC_SW_IRQHandler                               EXTI4_15_IRQHandler
 
 #define SW1_Pin 					GPIO_PIN_7
 #define SW1_GPIO_Port 					GPIOF
+#define SW1_GPIO_CLK_ENABLE()                           __HAL_RCC_GPIOF_CLK_ENABLE()
+#define SW1_IRQn                                        EXTI4_15_IRQn
+#define SW1_IRQHandler                                  EXTI4_15_IRQHandler
+
+// Comment out if PULLUP is external
+//#define PINS_PULLUP       
 
 // Enable Pins
 #define OUT_EN_Pin 					GPIO_PIN_15

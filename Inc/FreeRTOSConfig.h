@@ -101,12 +101,17 @@
 #define configCPU_CLOCK_HZ                       ( SystemCoreClock )
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 7 )
-#define configMINIMAL_STACK_SIZE                 ((uint16_t)96)
-#define configTOTAL_HEAP_SIZE                    ((size_t)1024)
+#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
+#define configTOTAL_HEAP_SIZE                    ((size_t)1600)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_16_BIT_TICKS                   0
 #define configUSE_MUTEXES                        1
 #define configQUEUE_REGISTRY_SIZE                8
+
+#define configUSE_TIMERS                         1
+#define configTIMER_TASK_PRIORITY                ( configMAX_PRIORITIES - 1 )
+#define configTIMER_QUEUE_LENGTH                 ( ( unsigned short ) 20 )
+#define configTIMER_TASK_STACK_DEPTH	         ( ( unsigned short ) 50 )
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                    0
