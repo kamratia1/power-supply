@@ -10,5 +10,6 @@
 void Enable_Init(void);
 void Enable_Output(GPIO_PinState state);
 void Enable_VSW(GPIO_PinState state);
+void Enable_Bklight(GPIO_PinState state);
 
 #endif

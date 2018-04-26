@@ -98,19 +98,17 @@
 #define ENCA_GPIO_Port 					GPIOA
 #define ENCA_GPIO_CLK_ENABLE()                          __HAL_RCC_GPIOA_CLK_ENABLE()
 #define ENCA_B_IRQn                                     EXTI4_15_IRQn
-#define ENCA_B_IRQHandler                               EXTI4_15_IRQHandler
 
 #define ENC_SW_Pin 					GPIO_PIN_6
 #define ENC_SW_GPIO_Port 				GPIOF
 #define ENC_SW_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOF_CLK_ENABLE()
 #define ENC_SW_IRQn                                     EXTI4_15_IRQn
-#define ENC_SW_IRQHandler                               EXTI4_15_IRQHandler
 
 #define SW1_Pin 					GPIO_PIN_7
 #define SW1_GPIO_Port 					GPIOF
 #define SW1_GPIO_CLK_ENABLE()                           __HAL_RCC_GPIOF_CLK_ENABLE()
 #define SW1_IRQn                                        EXTI4_15_IRQn
-#define SW1_IRQHandler                                  EXTI4_15_IRQHandler
+#define ENC_SW1_IRQHandler                              EXTI4_15_IRQHandler
 
 // Comment out if PULLUP is external
 //#define PINS_PULLUP       

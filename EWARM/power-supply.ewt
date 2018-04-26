@@ -1160,39 +1160,6 @@
     <group>
         <name>Application</name>
         <group>
-            <name>FreeRTOS</name>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\croutine.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\list.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM0\port.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM0\portasm.s</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\queue.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\tasks.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\timers.c</name>
-            </file>
-        </group>
-        <group>
             <name>Src</name>
             <group>
                 <name>Control</name>
@@ -1227,9 +1194,6 @@
             <group>
                 <name>Main</name>
                 <file>
-                    <name>$PROJ_DIR$\..\Inc\FreeRTOSConfig.h</name>
-                </file>
-                <file>
                     <name>$PROJ_DIR$\..\Inc\hw_config.h</name>
                 </file>
                 <file>
@@ -1240,9 +1204,6 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\printf.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Src\rtos.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Src\system_state.c</name>
@@ -1265,16 +1226,16 @@
             </group>
             <group>
                 <name>UI</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\graphics.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\lcd.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\ui.c</name>
+                </file>
             </group>
-            <file>
-                <name>$PROJ_DIR$\..\Src\graphics.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Src\lcd.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Src\ui.c</name>
-            </file>
         </group>
     </group>
     <group>

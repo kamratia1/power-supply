@@ -34,7 +34,8 @@
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx.h"
 #include "stm32f0xx_it.h"
-#include "cmsis_os.h"
+//#include "cmsis_os.h"
+#include "hw_config.h"
 
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef UART_Handle;
@@ -66,7 +67,7 @@ void HardFault_Handler(void)
 */
 void SysTick_Handler(void)
 {
-  osSystickHandler();
+  //osSystickHandler();
 }
 
 /******************************************************************************/
@@ -97,4 +98,41 @@ void DMA1_Channel2_3_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(UART_Handle.hdmatx);
   HAL_DMA_IRQHandler(UART_Handle.hdmarx);
+}
+
+void ENC_SW1_IRQHandler(void)
+{
+  static GPIO_PinState pinA; 
+  static GPIO_PinState pinB;
+  static GPIO_PinState encSw; 
+  static GPIO_PinState Sw1;
+  
+  // Read GPIO Pins 
+  pinA = HAL_GPIO_ReadPin(ENCA_GPIO_Port, ENCA_Pin);
+  pinB = HAL_GPIO_ReadPin(ENCB_GPIO_Port, ENCB_Pin);
+  encSw = HAL_GPIO_ReadPin(ENC_SW_GPIO_Port, ENC_SW_Pin);
+  Sw1 = HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin);
+  
+  if (encSw == GPIO_PIN_RESET)
+  {
+    // Handle Interrupt on Falling edge of Encoder Switch
+    HAL_GPIO_EXTI_IRQHandler(ENC_SW_Pin);
+  }
+  
+  if (Sw1 == GPIO_PIN_RESET)
+  {
+    // Handle Interrupt on Falling edge of Output Switch
+    HAL_GPIO_EXTI_IRQHandler(SW1_Pin);
+  }
+  
+  if( pinA == GPIO_PIN_SET || pinA == GPIO_PIN_RESET )
+  {
+    // Handle Interrupt on Rising or falling edge of Encoder Switch
+    HAL_GPIO_EXTI_IRQHandler(ENCA_Pin);
+  }
+  
+  if( pinB == GPIO_PIN_SET || pinB == GPIO_PIN_RESET )
+  {
+    HAL_GPIO_EXTI_IRQHandler(ENCB_Pin);
+  }
 }

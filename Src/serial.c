@@ -5,14 +5,13 @@
 *******************************************************************************/
 
 /* Includes ------------------------------------------------------------------*/
-#include "rtos.h"
-#include "uart.h"
 #include "stm32f0xx_hal.h"
 #include "string.h"
 #include "enable.h"
 #include "pwm.h"
 #include "hw_config.h"
 #include "adc.h"
+#include "uart.h"
 
 /* Definitions ---------------------------------------------------------------*/
 #define RX_BUFFER_SIZE       16
@@ -39,7 +38,7 @@ uint16_t adc_values[6];
 static void process_command(void);
 
 
-void StartSerialTask(void const * argument)
+void StartSerialDebug(void const * argument)
 {
   UART_Print("\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
   
@@ -51,7 +50,7 @@ void StartSerialTask(void const * argument)
   {    
     process_command();    // Process Command
     ADC_PrintReadings();  // Print all ADC values      
-    osDelay(50);          // 50ms delay
+    HAL_Delay(50);          // 50ms delay
   }
 }
 

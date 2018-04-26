@@ -4,7 +4,6 @@
                        Handles the Power supply main control system
 *******************************************************************************/
 
-#include "rtos.h"
 #include "stm32f0xx_hal.h"
 #include "hw_config.h"
 #include "buttons.h"

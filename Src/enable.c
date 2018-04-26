@@ -15,6 +15,7 @@ void Enable_Init(void)
   
   OUT_EN_GPIO_CLK_ENABLE();
   VSW_EN_GPIO_CLK_ENABLE();
+  DISP_BKLIGHT_GPIO_CLK_ENABLE();
   
   GPIO_InitTypeDef GPIO_InitStruct;
   GPIO_InitStruct.Pin = OUT_EN_Pin;
@@ -29,6 +30,11 @@ void Enable_Init(void)
   GPIO_InitStruct.Pin = VSW_EN_Pin;
   HAL_GPIO_Init(VSW_EN_GPIO_Port, &GPIO_InitStruct);
   Enable_VSW(GPIO_PIN_RESET);
+  
+  GPIO_InitStruct.Pin = DISP_BKLIGHT_Pin;
+  HAL_GPIO_Init(DISP_BKLIGHT_GPIO_Port, &GPIO_InitStruct);
+  Enable_Bklight(GPIO_PIN_RESET);  
+  
 }
 
 void Enable_Output(GPIO_PinState state)
@@ -46,4 +52,9 @@ void Enable_Output(GPIO_PinState state)
 void Enable_VSW(GPIO_PinState state)
 {
   HAL_GPIO_WritePin(VSW_EN_GPIO_Port, VSW_EN_Pin, state);
+}
+
+void Enable_Bklight(GPIO_PinState state)
+{
+  HAL_GPIO_WritePin(DISP_BKLIGHT_GPIO_Port, DISP_BKLIGHT_Pin, state);
 }

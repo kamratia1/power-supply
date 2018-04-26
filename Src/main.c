@@ -6,22 +6,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f0xx_hal.h"
-#include "cmsis_os.h"
 #include "uart.h"
-#include "rtos.h"
 #include "enable.h"
 #include "pwm.h"
 #include "hw_config.h"
 #include "adc.h"
 #include "buttons.h"
 #include "encoder.h"
+#include "lcd.h"
+#include "graphics.h"
+#include "system_state.h"
 
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-
-/* Private function prototypes -----------------------------------------------*/
 
 int main(void)
 {
@@ -32,26 +31,20 @@ int main(void)
   SystemClock_Config();
   
   /* Initialise Hardware peripherals */
+  SystemState_Init();
   UART_Init();
   Enable_Init();
   PWM_Init();
   ADC_Init();
   Buttons_Init();
   Encoder_Init();
+  LCD_Init();  
   
-  PWM_setDuty(VSET_PWM_Pin, 0);
-  PWM_setDuty(ISET_PWM_Pin, 0);
-  PWM_setDuty(VSW_PWM_Pin, 0);
+  // Blank Screen and Enable Backlight
+  fillScreen(BLACK); 
+  Enable_Bklight(GPIO_PIN_SET);  
   
-  /* Call init function for freertos objects (in freertos.c) */
-  RTOS_Init();
-  
-  /* Start scheduler */
-  osKernelStart();
-  
-  /* We should never get here as control is now taken by the scheduler */
-
-  /* Infinite loop */
+  // Infinite loop
   while (1)
   {
   }

@@ -13,13 +13,6 @@
 /* Definitions----------------------------------------------------------------*/
 #define DEBOUNCE_TIMER_MS               40
 
-/* Private Function Prototypes -----------------------------------------------*/
-void vDebounceTimerCallback(TimerHandle_t xTimer);
-
-/* Private variables ---------------------------------------------------------*/
-TimerHandle_t           xDebounceTimer;
-
-
 void Buttons_Init(void)
 {
   // Initialise GPIO Strcutre
@@ -52,29 +45,26 @@ void Buttons_Init(void)
   HAL_NVIC_EnableIRQ(SW1_IRQn);  
   
   // Create the Debounce Timer
-  xDebounceTimer = xTimerCreate("Debounce Timer", pdMS_TO_TICKS(DEBOUNCE_TIMER_MS), pdFALSE,( void * ) 0, vDebounceTimerCallback);
-  
-  // Initialises the LED on the discovery board. 
-  // ** NOTE ** The display SCK pin is wired to the same GPIO Pin so wil be overwritten when display SPI driver is initialised
-  //LED_Init();
-  
+  //xDebounceTimer = xTimerCreate("Debounce Timer", pdMS_TO_TICKS(DEBOUNCE_TIMER_MS), pdFALSE,( void * ) 0, vDebounceTimerCallback);
+   
 }
 
 void Buttons_IRQ_Callback(uint16_t GPIO_Pin)
 {
-  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-  
+    
   // Disable interrupt for the relevant GPIO pin and start debounce timer
   if (GPIO_Pin == SW1_Pin)
   {   
-    HAL_NVIC_DisableIRQ(SW1_IRQn); 
-    xTimerStartFromISR(xDebounceTimer, &xHigherPriorityTaskWoken);
+    HAL_NVIC_DisableIRQ(SW1_IRQn);
+    // start debounce timer
+    //xTimerStartFromISR(xDebounceTimer, &xHigherPriorityTaskWoken);
   }
   
   if (GPIO_Pin == ENC_SW_Pin)
   {
     HAL_NVIC_DisableIRQ(ENC_SW_IRQn);
-    xTimerStartFromISR(xDebounceTimer, &xHigherPriorityTaskWoken);
+    //start debounce timer
+    //xTimerStartFromISR(xDebounceTimer, &xHigherPriorityTaskWoken);
   }
 }
 

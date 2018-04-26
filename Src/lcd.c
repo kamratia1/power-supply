@@ -8,7 +8,7 @@
 #include "stm32f0xx_hal.h"
 #include "hw_config.h"
 #include "lcd.h"
-#include "rtos.h"
+#include "enable.h"
 
 /* Private Variables ---------------------------------------------------------*/
 SPI_HandleTypeDef SPI_Handle;
@@ -149,7 +149,7 @@ void LCD_Init(void)
     {
       delay_ms(cmd->delay);
     }
-  }  
+  }
 }
 
 void LCD_SetAddrWindow(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height)
@@ -192,18 +192,9 @@ void LCD_FillRectangle(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, ui
   CS_HIGH();
 }
 
-// This delay function checks if RTOS scheduler has started 
-// and uses the appropriate delay function depending on whether scheduler has started or not
 static void delay_ms(uint16_t ms)
 {
-  if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
-  {
     HAL_Delay(ms);
-  }
-  else if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
-  {   
-    osDelay(ms);
-  }
 }
 
 static void SPI_Write(uint8_t byte)

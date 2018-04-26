@@ -89,6 +89,11 @@ void PWM_Init(void)
   GPIO_InitStruct.Pin = VSW_PWM_Pin;
   HAL_GPIO_Init(VSW_PWM_GPIO_Port, &GPIO_InitStruct);
   
+  // Set PWM Values to zero
+  PWM_setDuty(VSET_PWM_Pin, 0);
+  PWM_setDuty(ISET_PWM_Pin, 0);
+  PWM_setDuty(VSW_PWM_Pin, 0);
+  
 }
 
 void PWM_setDuty(uint16_t GPIO_Pin, uint16_t val)
