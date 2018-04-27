@@ -34,12 +34,12 @@
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx.h"
 #include "stm32f0xx_it.h"
-//#include "cmsis_os.h"
 #include "hw_config.h"
 
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef UART_Handle;
 extern TIM_HandleTypeDef htim17;
+extern TIM_HandleTypeDef DebounceTimerHandle;
 
 /******************************************************************************/
 /*            Cortex-M0 Processor Interruption and Exception Handlers         */ 
@@ -83,6 +83,13 @@ void SysTick_Handler(void)
 void TIM17_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&htim17);
+}
+
+// Timer 14 global Interrupt
+
+void DEBOUNCE_TIMER_IRQHandler(void)
+{
+    HAL_TIM_IRQHandler(&DebounceTimerHandle);
 }
 
 /**

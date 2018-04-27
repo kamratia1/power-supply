@@ -8,6 +8,8 @@
 #include "hw_config.h"
 #include "pwm.h"
 
+#define PWM_FREQ        20000
+
 /* Private Variables ---------------------------------------------------------*/
 TIM_HandleTypeDef TIM1_Handle;
 TIM_OC_InitTypeDef sConfigOC;
@@ -16,7 +18,7 @@ TIM_OC_InitTypeDef sConfigOC;
 void PWM_Init(void)
 { 
   // All of this initialisation code taken from Cube MX auto Generated
-  // PWM Freq = Clock_Freq/((Period+1)*(Prescaler+1))
+  // PWM Freq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
   // Duty Cycle is set by the OC Pulse variable and can be any value between 0 and Period
   // To maximize PWM resolution, the period is kept as high as possible, while keeping the prescaler low
   // PWM Frequency is set to 20kHz as it is on the limit of human hearing, MCU Clock_Freq is 48MHz
@@ -27,10 +29,12 @@ void PWM_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;
   
+  
+  
   TIM1_Handle.Instance = TIM1;
   TIM1_Handle.Init.Prescaler = 0;
   TIM1_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;
-  TIM1_Handle.Init.Period = 2399;
+  TIM1_Handle.Init.Period = (SystemCoreClock/((TIM1_Handle.Init.Prescaler + 1)*(PWM_FREQ)))-1; //2399;
   TIM1_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   TIM1_Handle.Init.RepetitionCounter = 0;
   TIM1_Handle.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;

@@ -9,5 +9,5 @@
 /* Function Prototypes ------------------------------------------------------*/
 void Buttons_Init(void);
 void Buttons_IRQ_Callback(uint16_t GPIO_Pin);
-
+void Buttons_DebounceTimerCallback(void);
 #endif

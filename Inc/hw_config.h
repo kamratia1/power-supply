@@ -6,7 +6,7 @@
 #ifndef __PINS_CONFIG_H__
 #define __PINS_CONFIG_H__
 
-// ADC Pins
+/* ADC Pins ------------------------------------------------------------------*/
 #define VREF_FILT_Pin 					GPIO_PIN_0
 #define VREF_FILT_GPIO_Port 			        GPIOA
 #define VREF_FILT_ADC_CHANNEL                           ADC_CHANNEL_0
@@ -39,7 +39,7 @@
 #define ADC_CLK_ENABLE()                                __HAL_RCC_ADC1_CLK_ENABLE()
 #define ADC_GPIO_Port                                   GPIOA
 
-// Display Pins
+/* Display Pins --------------------------------------------------------------*/
 #define DISP_BKLIGHT_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOA_CLK_ENABLE()
 #define DISP_BKLIGHT_Pin 				GPIO_PIN_7
 #define DISP_BKLIGHT_GPIO_Port 			        GPIOA
@@ -71,7 +71,7 @@
 #define DISP_MISO_Pin 					GPIO_PIN_14
 #define DISP_MISO_GPIO_Port 			        GPIOB
 
-//PWM Pins
+/* PWM Pins ------------------------------------------------------------------*/
 #define TIM_PWM_CLK_ENABLE()                           __HAL_RCC_TIM1_CLK_ENABLE()
 #define TIM_PWM_AF                                     GPIO_AF2_TIM1
 
@@ -90,7 +90,7 @@
 #define VSW_PWM_GPIO_CLK_ENABLE()                       __HAL_RCC_GPIOA_CLK_ENABLE()
 #define VSW_PWM_TIM_CHANNEL                             TIM_CHANNEL_3
 
-// Encoder and Switch Pins
+/* Encoder and Switch Pins ---------------------------------------------------*/
 #define ENCB_Pin 					GPIO_PIN_11
 #define ENCB_GPIO_Port 					GPIOA
 #define ENCB_GPIO_CLK_ENABLE()                          __HAL_RCC_GPIOA_CLK_ENABLE()
@@ -111,9 +111,26 @@
 #define ENC_SW1_IRQHandler                              EXTI4_15_IRQHandler
 
 // Comment out if PULLUP is external
-//#define PINS_PULLUP       
+//#define PINS_PULLUP   
 
-// Enable Pins
+/* Timer Configurations ------------------------------------------------------*/
+#define DEBOUNCE_TIMER_TIM                              TIM14
+#define DEBOUNCE_TIMER_CLK_ENABLE()                     __HAL_RCC_TIM14_CLK_ENABLE()
+#define DEBOUNCE_TIMER_IRQn                             TIM14_IRQn
+#define DEBOUNCE_TIMER_IRQHandler                       TIM14_IRQHandler
+#define DEBOUNCE_TIMER_MS                               40
+
+/* 
+  TIM1   |      PWM
+  TIM3   |      Not Used
+  TIM14  |      Debounce Timer
+  TIM16  |      Not Used
+  TIM17  |      Not Used
+  
+Use the unused timers for Control, Debug and UI
+*/
+
+/* Enable Pins ---------------------------------------------------------------*/
 #define OUT_EN_Pin 					GPIO_PIN_15
 #define OUT_EN_GPIO_Port 				GPIOA
 #define OUT_EN_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOA_CLK_ENABLE()
@@ -122,7 +139,7 @@
 #define VSW_EN_GPIO_Port 				GPIOB
 #define VSW_EN_GPIO_CLK_ENABLE()                        __HAL_RCC_GPIOB_CLK_ENABLE()
 
-/* UART Config ****************************************************************/
+/* UART Config ---------------------------------------------------------------*/
 #define BAUDRATE                                        115200
 #define USARTx                                          USART1
 #define UART_TX_Pin 					GPIO_PIN_6
