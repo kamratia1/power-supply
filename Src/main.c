@@ -16,6 +16,7 @@
 #include "lcd.h"
 #include "graphics.h"
 #include "system_state.h"
+#include "serial.h"
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -39,6 +40,8 @@ int main(void)
   Buttons_Init();
   Encoder_Init();
   LCD_Init();  
+  
+  Debug_Init();
   
   // Blank Screen and Enable Backlight
   fillScreen(BLACK); 

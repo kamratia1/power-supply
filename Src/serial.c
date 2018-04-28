@@ -12,6 +12,7 @@
 #include "hw_config.h"
 #include "adc.h"
 #include "uart.h"
+#include "serial.h"
 
 /* Definitions ---------------------------------------------------------------*/
 #define RX_BUFFER_SIZE       16
@@ -38,20 +39,21 @@ uint16_t adc_values[6];
 static void process_command(void);
 
 
-void StartSerialDebug(void const * argument)
+void Debug_Init(void)
 {
   UART_Print("\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
   
   // Set UART DMA to receive into RxBuffer
   UART_Receive_DMA_Start((uint8_t *)RxBuffer, RX_BUFFER_SIZE);
   
-  /* Infinite loop */
-  for(;;)
-  {    
+  // Sort out Timer to delay 50ms before calling function again
+}
+
+void Serial_StartDebug(void)
+{  
     process_command();    // Process Command
-    ADC_PrintReadings();  // Print all ADC values      
-    HAL_Delay(50);          // 50ms delay
-  }
+    ADC_PrintReadings();  // Print all ADC values 
+    
 }
 
 void process_command(void)
@@ -68,7 +70,7 @@ void process_command(void)
     if (RxBuffer[i] == '+')
     {
       // Parse the command buffer and extract the command number and value
-      sscanf((char*)RxBuffer, "cmd,%d,%d,+", &cmd_number, &val);        // TODO - rewrite for lower flash footprint
+      sscanf((char*)RxBuffer, "cmd,%d,%d,+", &cmd_number, &val);        
       
       // decide what to do based on command
       switch(cmd_number)
@@ -95,7 +97,7 @@ void process_command(void)
       // print out command back onto serial or specify invalid command
       if (cmd_number > 0 && cmd_number <= CMD_NUMBER)
       {
-        sprintf(str, "ok,cmd=%d val=%d\r\n", cmd_number, val);  // TODO - rewrite for lower flash footprint
+        sprintf(str, "ok,cmd=%d val=%d\r\n", cmd_number, val);
       }
       else
       {

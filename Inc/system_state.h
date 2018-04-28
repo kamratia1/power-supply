@@ -27,6 +27,12 @@ typedef enum
     
 }EncoderSw_TypeDef;
 
+typedef enum
+{
+  CONSTANT_VOLTAGE = 0,
+  CONSTANT_CURRENT = 1
+    
+}PowerSupplyState_TypeDef
 
 typedef enum
 {
@@ -45,8 +51,8 @@ uint16_t          Get_EncoderCurrent(void);
 EncoderSw_TypeDef Get_EncoderSwitchState(void);
 OutputSw_TypeDef  Get_OutputSwState(void);
 
-void Set_EncoderVoltage(uint16_t val);
-void Set_EncoderCurrent(uint16_t val);
+void Set_EncoderVoltage(int16_t val);
+void Set_EncoderCurrent(int16_t val);
 void Set_EncoderSwitchState(EncoderSw_TypeDef State);
 void Set_OutputSwState(OutputSw_TypeDef State);
 

@@ -85,14 +85,8 @@ void Encoder_IRQ_Callback(void)
       if (result == DIR_CCW)    encoderCurrent--;
       break;
   }   
-  
-  // Ensure Values are Bound Within the limits
-  if (encoderVoltage <= 0)      encoderVoltage = 0;  
-  if (encoderCurrent <= 0)      encoderCurrent = 0;    
-  if (encoderVoltage >= NUM_STEPS_VOLTAGE)       encoderVoltage = NUM_STEPS_VOLTAGE;
-  if (encoderCurrent >= NUM_STEPS_CURRENT)       encoderCurrent = NUM_STEPS_CURRENT;
-  
-  //Set State
+   
+  // Set State. The bounding of the encoderCurrent and encoderVoltage is done in system_state.c 
   Set_EncoderVoltage(encoderVoltage);
   Set_EncoderCurrent(encoderCurrent);
   

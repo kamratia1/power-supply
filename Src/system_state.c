@@ -66,13 +66,19 @@ uint16_t Get_EncodeCurrent(void)
 }
 
 // Sets the Encoder Value for Voltage and Current with appropriate boundings
-void Set_EncoderVoltage(uint16_t val)
-{
+void Set_EncoderVoltage(int16_t val)
+{  
+  if (val <= 0)                       val = 0;  
+  if (val >= NUM_STEPS_VOLTAGE)       val = NUM_STEPS_VOLTAGE;
+  
   State_EncoderVal.voltageStep = val;
 }
 
-void Set_EncoderCurrent(uint16_t val)
+void Set_EncoderCurrent(int16_t val)
 {
+  if (val <= 0)                       val = 0;    
+  if (val >= NUM_STEPS_CURRENT)       val = NUM_STEPS_CURRENT;
+  
   State_EncoderVal.currentStep = val;
 }
 
