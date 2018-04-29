@@ -79,7 +79,7 @@ void ADC_Init(void)
   ADC_CLK_ENABLE();    
   
   //Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
-  ADC_Handle.Instance = ADC1;
+  ADC_Handle.Instance = ADC_INSTANCE;
   ADC_Handle.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   ADC_Handle.Init.Resolution = ADC_RESOLUTION_12B;
   ADC_Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT;
@@ -100,7 +100,7 @@ void ADC_Init(void)
 
   // ADC1 DMA Init
   // ADC Init
-  DMA_ADC_Handle.Instance = DMA1_Channel1;
+  DMA_ADC_Handle.Instance = ADC_DMA_CHANNEL;
   DMA_ADC_Handle.Init.Direction = DMA_PERIPH_TO_MEMORY;
   DMA_ADC_Handle.Init.PeriphInc = DMA_PINC_DISABLE;
   DMA_ADC_Handle.Init.MemInc = DMA_MINC_ENABLE;

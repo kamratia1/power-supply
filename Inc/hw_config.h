@@ -10,6 +10,9 @@
 void Delay_us(int us); // defined in system_state.c
 
 /* ADC Pins ------------------------------------------------------------------*/
+#define ADC_DMA_CHANNEL                                 DMA1_Channel1
+#define ADC_INSTANCE                                    ADC1
+
 #define VREF_FILT_Pin 					GPIO_PIN_0
 #define VREF_FILT_GPIO_Port 			        GPIOA
 #define VREF_FILT_ADC_CHANNEL                           ADC_CHANNEL_0
@@ -73,6 +76,10 @@ void Delay_us(int us); // defined in system_state.c
 
 #define DISP_MISO_Pin 					GPIO_PIN_14
 #define DISP_MISO_GPIO_Port 			        GPIOB
+
+#define DISP_SPI_IRQn                                   SPI1_IRQn
+#define DISP_SPI_IRQHandler                             SPI1_IRQHandler
+#define DISP_SPI_DMA_CHANNEL                            DMA1_Channel3
 
 /* PWM Pins ------------------------------------------------------------------*/
 #define TIM_PWM_CLK_ENABLE()                           __HAL_RCC_TIM1_CLK_ENABLE()
@@ -163,14 +170,15 @@ void Delay_us(int us); // defined in system_state.c
 
 #define USARTx_IRQn                              	USART1_IRQn
 #define USARTx_IRQHandler                        	USART1_IRQHandler
-#define USARTx_DMA_TX_IRQn                              DMA1_Channel2_3_IRQn
-#define USARTx_DMA_RX_IRQn                              DMA1_Channel2_3_IRQn
+#define USARTx_DMA_TX_IRQn                              DMA1_Channel4_5_IRQn
+#define USARTx_DMA_RX_IRQn                              DMA1_Channel4_5_IRQn
 
 #define USARTx_GPIO_PORT_CLK_ENABLE()                   __HAL_RCC_GPIOB_CLK_ENABLE()
 #define USARTx_CLK_ENABLE()                             __HAL_RCC_USART1_CLK_ENABLE()
 #define DMAx_CLK_ENABLE()                               __HAL_RCC_DMA1_CLK_ENABLE()
 
-#define USARTx_TX_DMA_CHANNEL                           DMA1_Channel2 
-#define USARTx_RX_DMA_CHANNEL                           DMA1_Channel3
+#define USARTx_TX_DMA_CHANNEL                           DMA1_Channel4 
+#define USARTx_RX_DMA_CHANNEL                           DMA1_Channel5
+#define USARTx_DMA_IRQHandler                           DMA1_Channel4_5_IRQHandler
 
 #endif

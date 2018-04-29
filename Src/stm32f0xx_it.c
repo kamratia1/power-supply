@@ -113,7 +113,7 @@ void USART1_IRQHandler(void)
 }
 
 
-void DMA1_Channel2_3_IRQHandler(void)
+void USARTx_DMA_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(UART_Handle.hdmatx);
   HAL_DMA_IRQHandler(UART_Handle.hdmarx);

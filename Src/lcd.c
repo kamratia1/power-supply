@@ -98,7 +98,7 @@ static void LCD_SPI_Init(void)
 {   
   SPI_Handle.Instance               = DISP_SPIx;
   SPI_Handle.Init.Mode              = SPI_MODE_MASTER;
-  SPI_Handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  SPI_Handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   SPI_Handle.Init.Direction         = SPI_DIRECTION_2LINES;
   SPI_Handle.Init.CLKPhase          = SPI_PHASE_1EDGE;
   SPI_Handle.Init.CLKPolarity       = SPI_POLARITY_LOW;
@@ -111,6 +111,31 @@ static void LCD_SPI_Init(void)
   SPI_Handle.Init.NSS               = SPI_NSS_SOFT;
   SPI_Handle.Init.NSSPMode          = SPI_NSS_PULSE_DISABLE;        
   HAL_SPI_Init(&SPI_Handle);
+  
+  // Config NVIC for SPI
+  /*HAL_NVIC_SetPriority(DISP_SPI_IRQn, 4, 0);
+  HAL_NVIC_EnableIRQ(DISP_SPI_IRQn);
+  
+  // Configure DMA
+  DMA_HandleTypeDef SPIDMA_Handle;
+  SPIDMA_Handle.Instance                 = USARTx_TX_DMA_CHANNEL;
+  SPIDMA_Handle.Init.Direction           = DMA_MEMORY_TO_PERIPH;
+  SPIDMA_Handle.Init.PeriphInc           = DMA_PINC_DISABLE;
+  SPIDMA_Handle.Init.MemInc              = DMA_MINC_ENABLE;
+  SPIDMA_Handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+  SPIDMA_Handle.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
+  SPIDMA_Handle.Init.Mode                = DMA_NORMAL;
+  SPIDMA_Handle.Init.Priority            = DMA_PRIORITY_MEDIUM;
+  HAL_DMA_Init(&SPIDMA_Handle);
+  
+   // Associate the initialized DMA handle to the SPI handle
+  __HAL_LINKDMA(&SPI_Handle, hdmatx, SPIDMA_Handle);
+  
+  // Configure Interrupts
+  // NVIC configuration for DMA transfer complete interrupt (USART1_TX)
+  HAL_NVIC_SetPriority(USARTx_DMA_TX_IRQn, 0, 1);
+  HAL_NVIC_EnableIRQ(USARTx_DMA_TX_IRQn);
+  */
 }
 
 
