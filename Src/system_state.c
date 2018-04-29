@@ -104,7 +104,11 @@ void Set_OutputSwState(OutputSw_TypeDef State)
   State_OutputSw = State;  
 }
 
-
-
+// Blocking Delay Function
+void Delay_us(int us)
+{
+  uint16_t ticks = (SystemCoreClock/1000000) * (us/10);
+  for(int i=0; i<ticks; i++); 
+}
 
 

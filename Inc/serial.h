@@ -9,7 +9,7 @@
 /* Definitions */
 
 /* Public Function Prototypes */
-void Serial_Init(void);
-void Serial_StartDebug(void);
+void SerialDebug_Init(void);
+void Serial_DebugTimerCallback(void);
 
 #endif /* UART_H_ */

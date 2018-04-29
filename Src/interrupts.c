@@ -10,6 +10,8 @@
 #include "hw_config.h"
 #include "buttons.h"
 #include "encoder.h"
+#include "serial.h"
+#include "control.h"
 
 // External GPIO Interrupts
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -45,5 +47,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *TimerHandle)
   {
     Buttons_DebounceTimerCallback();
   }
+  
+  if (TimerHandle->Instance == DEBUG_TIMER_TIM)
+  {
+    Serial_DebugTimerCallback();
+  }
+  
+  if (TimerHandle->Instance == CONTROL_TIMER_TIM)
+  {
+    Control_TimerCallback();
+  }  
 }
 

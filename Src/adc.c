@@ -53,7 +53,7 @@ uint16_t ADC_getReading(uint16_t GPIO_Pin)
 
 void ADC_PrintReadings(void)
 {
-  char str[64];
+  char str[40];
   sprintf(str, "k,%d,%d,%d,%d,%d,%d,%d\n", adcData[0], adcData[1], adcData[2], adcData[3], adcData[4], adcData[5], adcData[6]);
   UART_Print(str);
 }

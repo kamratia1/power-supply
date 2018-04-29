@@ -40,6 +40,8 @@
 extern UART_HandleTypeDef UART_Handle;
 extern TIM_HandleTypeDef htim17;
 extern TIM_HandleTypeDef DebounceTimerHandle;
+extern TIM_HandleTypeDef DebugTimerHandle;
+extern TIM_HandleTypeDef ControlTimerHandle;
 
 /******************************************************************************/
 /*            Cortex-M0 Processor Interruption and Exception Handlers         */ 
@@ -85,12 +87,22 @@ void TIM17_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim17);
 }
 
-// Timer 14 global Interrupt
-
+// Application Timer Intterupts
 void DEBOUNCE_TIMER_IRQHandler(void)
 {
-    HAL_TIM_IRQHandler(&DebounceTimerHandle);
+  HAL_TIM_IRQHandler(&DebounceTimerHandle);
 }
+
+void DEBUG_TIMER_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&DebugTimerHandle);
+}
+
+void CONTROL_TIMER_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&ControlTimerHandle);
+}
+
 
 /**
 * @brief This function handles UART interrupt.
@@ -122,24 +134,28 @@ void ENC_SW1_IRQHandler(void)
   
   if (encSw == GPIO_PIN_RESET)
   {
-    // Handle Interrupt on Falling edge of Encoder Switch
+    // Handle Interrupt only on Falling edge of Encoder Switch
     HAL_GPIO_EXTI_IRQHandler(ENC_SW_Pin);
   }
   
   if (Sw1 == GPIO_PIN_RESET)
   {
-    // Handle Interrupt on Falling edge of Output Switch
+    // Handle Interrupt only on Falling edge of Output Switch
     HAL_GPIO_EXTI_IRQHandler(SW1_Pin);
   }
   
+  // ISN'T THIS CODE BELOW REDUNDANT
+  // TODO - The below code checks if pin is high or low, which is always true
+    // can probably remove the if statements
   if( pinA == GPIO_PIN_SET || pinA == GPIO_PIN_RESET )
   {
-    // Handle Interrupt on Rising or falling edge of Encoder Switch
+    // Handle Interrupt on Rising or falling edge of Encoder
     HAL_GPIO_EXTI_IRQHandler(ENCA_Pin);
   }
   
   if( pinB == GPIO_PIN_SET || pinB == GPIO_PIN_RESET )
   {
+    // Handle Interrupt on Rising or falling edge of Encoder
     HAL_GPIO_EXTI_IRQHandler(ENCB_Pin);
   }
 }

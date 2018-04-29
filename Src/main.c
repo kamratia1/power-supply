@@ -17,6 +17,7 @@
 #include "graphics.h"
 #include "system_state.h"
 #include "serial.h"
+#include "control.h"
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -39,9 +40,9 @@ int main(void)
   ADC_Init();
   Buttons_Init();
   Encoder_Init();
-  LCD_Init();  
-  
-  Debug_Init();
+  LCD_Init();    
+  Control_Init();
+  SerialDebug_Init();
   
   // Blank Screen and Enable Backlight
   fillScreen(BLACK); 
@@ -50,6 +51,7 @@ int main(void)
   // Infinite loop
   while (1)
   {
+
   }
 
 }

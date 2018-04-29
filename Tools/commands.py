@@ -4,7 +4,7 @@ import serial
 from widgets import Slider, Meter, Value
 import random
 
-globalVref = 3.34
+globalVref = 3.3
 COM_port = "COM7"
 baudRate = 115200
 samplingPeriod_ms = 25
@@ -150,38 +150,36 @@ class StatisticsBox(object):
         calculatedValues = []
 
         # reference voltage
-        referenceVoltage = (globalVref * values[0]/float(adcRange)) 
-        calculatedValues.append(referenceVoltage)
+        #referenceVoltage = (globalVref * values[0]/float(adcRange)) 
+
+        globalVref = 2.021/(values[0]/float(adcRange))
+        calculatedValues.append(globalVref)
         
-        # correct for gain error. Assume offset error is negligible
-        # divide voltage by gainError to correct
-        gainError = 2.048/referenceVoltage
-        #gainError = 1
 
         # input voltage
-        inputVoltage = 10 * ((globalVref * values[1]/float(adcRange)) / gainError)
+        inputVoltage = 9.95 * (globalVref * values[1]/float(adcRange))
         calculatedValues.append(inputVoltage)
 
         # preregulator output voltage
-        preregulatorVoltage = 10 * ((globalVref * values[2]/float(adcRange)) / gainError)
+        preregulatorVoltage = 10.2 * (globalVref * values[2]/float(adcRange))
         calculatedValues.append(preregulatorVoltage)
 
         # Linear Regulator Inuput Voltage
-        linearRegInVoltage = 10 * ((globalVref * values[5]/float(adcRange)) / gainError)
+        linearRegInVoltage = 10.2 * (globalVref * values[5]/float(adcRange))
         calculatedValues.append(linearRegInVoltage)
 
         # output voltage
-        outputVoltage = 10 * ((globalVref * values[3]/float(adcRange)) / gainError)
+        outputVoltage = 10.09 * (globalVref * values[3]/float(adcRange))
         calculatedValues.append(outputVoltage)
 
         # sense current
         # 2V/A = 500mA per Volt
-        senseCurrent_mA = 500 * ((globalVref * values[4]/float(adcRange)) / gainError)
+        senseCurrent_mA = 500 * (globalVref * values[4]/float(adcRange)) 
         calculatedValues.append(senseCurrent_mA)
 
         # quiescent current
         # 10mA per Volt
-        quiescentCurrent_mA = 10 * ((globalVref * values[6]/float(adcRange)) / gainError)
+        quiescentCurrent_mA = 10 * (globalVref * values[6]/float(adcRange))
         calculatedValues.append(quiescentCurrent_mA)
 
         # output current

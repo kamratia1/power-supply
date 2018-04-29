@@ -13,6 +13,7 @@
 #include "adc.h"
 #include "uart.h"
 #include "serial.h"
+#include "printf.h"
 
 /* Definitions ---------------------------------------------------------------*/
 #define RX_BUFFER_SIZE       16
@@ -30,33 +31,60 @@ enum COMMANDS
 };
 
 /* Private variables ---------------------------------------------------------*/
-extern UART_HandleTypeDef UART_Handle;
+TIM_HandleTypeDef DebugTimerHandle;
 uint8_t RxBuffer[RX_BUFFER_SIZE];
 char str[64];
 uint16_t adc_values[6];
 
 /* Private Function Prototypes -----------------------------------------------*/
-static void process_command(void);
+static void ProcessCommand(void);
+static void Debug_TimerInit(void);
+static void Debug_Task(void);
 
+static void Debug_Task(void)
+{
+   ProcessCommand();    // Process Command
+   ADC_PrintReadings();  // Print all ADC values
+}
 
-void Debug_Init(void)
+void Debug_TimerInit(void)
+{
+  DEBUG_TIMER_CLK_ENABLE();
+    
+  // DebougTimerFreq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
+  // Period =((DEBOUNCE_TIMER_MS * MCU_Clock)/(Prescaler+1))-1 
+  
+  DebugTimerHandle.Instance = DEBUG_TIMER_TIM;
+  DebugTimerHandle.Init.Prescaler = 127; // Set this to a (power of 2)-1 for integer maths
+  DebugTimerHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
+  DebugTimerHandle.Init.Period = ((DEBUG_TIMER_MS * SystemCoreClock)/((DebugTimerHandle.Init.Prescaler + 1)*1000)) - 1; 
+  DebugTimerHandle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  DebugTimerHandle.Init.RepetitionCounter = 0;
+  HAL_TIM_Base_Init(&DebugTimerHandle);
+  
+  HAL_NVIC_SetPriority(DEBUG_TIMER_IRQn, 2, 0);
+  HAL_NVIC_EnableIRQ(DEBUG_TIMER_IRQn);    
+  
+  HAL_TIM_Base_Start_IT(&DebugTimerHandle);
+  
+}
+
+void SerialDebug_Init(void)
 {
   UART_Print("\r\nPower Supply!\r\nKishan Amratia\r\nBuild Date 28 March 2018\r\n");
   
   // Set UART DMA to receive into RxBuffer
   UART_Receive_DMA_Start((uint8_t *)RxBuffer, RX_BUFFER_SIZE);
   
-  // Sort out Timer to delay 50ms before calling function again
+  Debug_TimerInit();
 }
 
-void Serial_StartDebug(void)
-{  
-    process_command();    // Process Command
-    ADC_PrintReadings();  // Print all ADC values 
-    
+void Serial_DebugTimerCallback(void)
+{
+  Debug_Task();
 }
 
-void process_command(void)
+void ProcessCommand(void)
 {
   int cmd_number = 0;           // command number
   int val = 0;                  // value to set for command
@@ -91,6 +119,7 @@ void process_command(void)
           Enable_Output((GPIO_PinState) val);          
           break;
         case DISP_BKLIGHT_EN:
+          Enable_Bklight((GPIO_PinState) val); 
           break;
       }
       
@@ -101,8 +130,9 @@ void process_command(void)
       }
       else
       {
-        UART_Print("Invalid Command!\r\n");
+        sprintf(str, "Invalid Command!\r\n");
       }        
+      UART_Print(str);
     }
   }
   

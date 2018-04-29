@@ -6,6 +6,9 @@
 #ifndef __PINS_CONFIG_H__
 #define __PINS_CONFIG_H__
 
+// Function prototype for microsecond Delay
+void Delay_us(int us); // defined in system_state.c
+
 /* ADC Pins ------------------------------------------------------------------*/
 #define VREF_FILT_Pin 					GPIO_PIN_0
 #define VREF_FILT_GPIO_Port 			        GPIOA
@@ -120,14 +123,25 @@
 #define DEBOUNCE_TIMER_IRQHandler                       TIM14_IRQHandler
 #define DEBOUNCE_TIMER_MS                               40
 
+#define DEBUG_TIMER_TIM                                 TIM16
+#define DEBUG_TIMER_CLK_ENABLE()                        __HAL_RCC_TIM16_CLK_ENABLE()
+#define DEBUG_TIMER_IRQn                                TIM16_IRQn
+#define DEBUG_TIMER_IRQHandler                          TIM16_IRQHandler
+#define DEBUG_TIMER_MS                                  50
+
+#define CONTROL_TIMER_TIM                               TIM3
+#define CONTROL_TIMER_CLK_ENABLE()                      __HAL_RCC_TIM3_CLK_ENABLE()
+#define CONTROL_TIMER_IRQn                              TIM3_IRQn
+#define CONTROL_TIMER_IRQHandler                        TIM3_IRQHandler
+#define CONTROL_TIMER_MS                                5
+
 /* 
   TIM1   |      PWM
-  TIM3   |      Not Used
+  TIM3   |      Control
   TIM14  |      Debounce Timer
-  TIM16  |      Not Used
+  TIM16  |      Debug
   TIM17  |      Not Used
   
-Use the unused timers for Control, Debug and UI
 */
 
 /* Enable Pins ---------------------------------------------------------------*/

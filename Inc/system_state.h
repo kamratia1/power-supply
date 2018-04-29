@@ -32,7 +32,7 @@ typedef enum
   CONSTANT_VOLTAGE = 0,
   CONSTANT_CURRENT = 1
     
-}PowerSupplyState_TypeDef
+}PowerSupplyState_TypeDef;
 
 typedef enum
 {
