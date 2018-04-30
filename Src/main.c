@@ -18,6 +18,7 @@
 #include "system_state.h"
 #include "serial.h"
 #include "control.h"
+#include "ui.h"
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -43,10 +44,7 @@ int main(void)
   LCD_Init();    
   Control_Init();
   SerialDebug_Init();
-  
-  // Blank Screen and Enable Backlight
-  fillScreen(BLACK); 
-  Enable_Bklight(GPIO_PIN_SET);  
+  UI_Init();  
   
   // Infinite loop
   while (1)

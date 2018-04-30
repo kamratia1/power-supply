@@ -41,7 +41,7 @@ static void Control_TimerInit(void)
   CONTROL_TIMER_CLK_ENABLE();
     
   // DebougTimerFreq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
-  // Period =((DEBOUNCE_TIMER_MS * MCU_Clock)/(Prescaler+1))-1 
+  // Period =((CONTROL_TIMER_MS * MCU_Clock)/(Prescaler+1))-1 
   
   ControlTimerHandle.Instance = CONTROL_TIMER_TIM;
   ControlTimerHandle.Init.Prescaler = 127; // Set this to a (power of 2)-1 for integer maths

@@ -12,6 +12,8 @@
 #include "encoder.h"
 #include "serial.h"
 #include "control.h"
+#include "ui.h"
+#include "system_state.h"
 
 // External GPIO Interrupts
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -41,11 +43,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *TimerHandle)
     // This makes a direct call to HAL_IncTick() to increment
     // a global variable "uwTick" used as application time base.
     HAL_IncTick();
-  }
-  
-  if (TimerHandle->Instance == DEBOUNCE_TIMER_TIM)
-  {
-    Buttons_DebounceTimerCallback();
+    
+    //Check for button debouncing
+    if (Get_DebounceTimerFlag() != FLAG_RESET)
+    {     
+      if (DebounceTime_Inc() == DEBOUNCE_TIMER_MS)
+      {
+        Buttons_DebounceTimerCallback();
+      }
+    }
   }
   
   if (TimerHandle->Instance == DEBUG_TIMER_TIM)

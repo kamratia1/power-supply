@@ -7,5 +7,8 @@
 #define _UI_H_
 
 
+void UI_Init(void);
+void UI_TimerCallback(void);
+
 
 #endif

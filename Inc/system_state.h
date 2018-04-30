@@ -19,6 +19,13 @@
 
 typedef enum
 {
+  FLAG_RESET = 0,
+  FLAG_SET = 1
+    
+}Flag_TypeDef;
+
+typedef enum
+{
   COARSE_VOLTAGE        = 0,
   FINE_VOLTAGE          = 1,
   CURRENT               = 2,

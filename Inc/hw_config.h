@@ -124,10 +124,12 @@ void Delay_us(int us); // defined in system_state.c
 //#define PINS_PULLUP   
 
 /* Timer Configurations ------------------------------------------------------*/
-#define DEBOUNCE_TIMER_TIM                              TIM14
-#define DEBOUNCE_TIMER_CLK_ENABLE()                     __HAL_RCC_TIM14_CLK_ENABLE()
-#define DEBOUNCE_TIMER_IRQn                             TIM14_IRQn
-#define DEBOUNCE_TIMER_IRQHandler                       TIM14_IRQHandler
+#define UI_TIMER_TIM                                    TIM14
+#define UI_TIMER_CLK_ENABLE()                           __HAL_RCC_TIM14_CLK_ENABLE()
+#define UI_TIMER_IRQn                                   TIM14_IRQn
+#define UI_TIMER_IRQHandler                             TIM14_IRQHandler
+#define UI_TIMER_MS                                     50
+
 #define DEBOUNCE_TIMER_MS                               40
 
 #define DEBUG_TIMER_TIM                                 TIM16
@@ -145,9 +147,9 @@ void Delay_us(int us); // defined in system_state.c
 /* 
   TIM1   |      PWM
   TIM3   |      Control
-  TIM14  |      Debounce Timer
+  TIM14  |      UI
   TIM16  |      Debug
-  TIM17  |      Not Used
+  TIM17  |      System Tick
   
 */
 

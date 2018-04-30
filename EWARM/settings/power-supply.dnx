@@ -9,7 +9,7 @@
         <stlinkfoundProbes />
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>1123793052</Checksum>
+        <Checksum>1252301685</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -34,7 +34,8 @@
         <Sort>4 0</Sort>
     </SfrWindow>
     <watch_formats>
-        <Fmt0>{W}1:out[10]	5	0</Fmt0>
+        <Fmt0>{W}1:debounceTime_ms	3	0</Fmt0>
+        <Fmt1>{W}1:out[10]	5	0</Fmt1>
     </watch_formats>
     <DisassembleMode>
         <mode>0</mode>

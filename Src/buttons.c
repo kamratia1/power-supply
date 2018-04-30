@@ -10,13 +10,21 @@
 #include "buttons.h"
 #include "system_state.h"
 
-/* Function prototypes -------------------------------------------------------*/
-void DebounceTimer_Init(void);
-void DebounceTimer_Start(void);
-void DebounceTimer_Stop(void);
+/* Private Variables ---------------------------------------------------------*/
+uint8_t debounceTime_ms = 0;
+Flag_TypeDef debounceTimerFlag = FLAG_RESET;
 
-TIM_HandleTypeDef DebounceTimerHandle;
 
+Flag_TypeDef Get_DebounceTimerFlag(void)
+{
+  return debounceTimerFlag;
+}
+
+uint8_t DebounceTime_Inc(void)
+{
+  debounceTime_ms++;
+  return debounceTime_ms;
+}
 
 void Buttons_Init(void)
 {
@@ -50,47 +58,13 @@ void Buttons_Init(void)
   HAL_NVIC_EnableIRQ(SW1_IRQn);  
   
   // Initialize the Debounce Timer
-  DebounceTimer_Init();
+  //DebounceTimer_Init();
    
 }
 
-void DebounceTimer_Init(void)
-{
-    DEBOUNCE_TIMER_CLK_ENABLE();
-    
-    // _DebounceTimerFreq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
-    // Period =((DEBOUNCE_TIMER_MS * MCU_Clock)/(Prescaler+1))-1 
-    
-    DebounceTimerHandle.Instance = DEBOUNCE_TIMER_TIM;
-    DebounceTimerHandle.Init.Prescaler = 127; // Set this to a (power of 2)-1 for integer maths
-    DebounceTimerHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
-    DebounceTimerHandle.Init.Period = ((DEBOUNCE_TIMER_MS * SystemCoreClock)/((DebounceTimerHandle.Init.Prescaler + 1)*1000)) - 1; 
-    DebounceTimerHandle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    DebounceTimerHandle.Init.RepetitionCounter = 0;
-    HAL_TIM_Base_Init(&DebounceTimerHandle);
-    
-    HAL_NVIC_SetPriority(DEBOUNCE_TIMER_IRQn, 1, 0);
-    HAL_NVIC_EnableIRQ(DEBOUNCE_TIMER_IRQn);    
-    
-}
-
-void DebounceTimer_Start(void)
-{
-  // Clear the update flag and start the timer
-  __HAL_TIM_CLEAR_IT(&DebounceTimerHandle, TIM_IT_UPDATE);
-  HAL_TIM_Base_Start_IT(&DebounceTimerHandle);
-}
-
-void DebounceTimer_Stop(void)
-{
-  // stop the timer
-  HAL_TIM_Base_Stop_IT(&DebounceTimerHandle);
-}
-
-
 void Buttons_IRQ_Callback(uint16_t GPIO_Pin)
 {
-  DebounceTimer_Start();
+  debounceTimerFlag = FLAG_SET;
   
   // Disable interrupt for the relevant GPIO pin and start debounce timer
   if (GPIO_Pin == SW1_Pin)
@@ -107,8 +81,10 @@ void Buttons_IRQ_Callback(uint16_t GPIO_Pin)
 void Buttons_DebounceTimerCallback(void)
 {      
    
-  // Stop the debounce timer
-  DebounceTimer_Stop();
+  // Reset the debounce timer
+  debounceTimerFlag = FLAG_RESET;
+  debounceTime_ms = 0;
+  
   // Check if button is pressed
   if (HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin) == GPIO_PIN_RESET)
   {

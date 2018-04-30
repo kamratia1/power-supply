@@ -39,7 +39,6 @@
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef UART_Handle;
 extern TIM_HandleTypeDef htim17;
-extern TIM_HandleTypeDef DebounceTimerHandle;
 extern TIM_HandleTypeDef DebugTimerHandle;
 extern TIM_HandleTypeDef ControlTimerHandle;
 
@@ -88,11 +87,6 @@ void TIM17_IRQHandler(void)
 }
 
 // Application Timer Intterupts
-void DEBOUNCE_TIMER_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&DebounceTimerHandle);
-}
-
 void DEBUG_TIMER_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&DebugTimerHandle);
@@ -103,7 +97,6 @@ void CONTROL_TIMER_IRQHandler(void)
   HAL_TIM_IRQHandler(&ControlTimerHandle);
 }
 
-
 /**
 * @brief This function handles UART interrupt.
 */
@@ -111,7 +104,6 @@ void USART1_IRQHandler(void)
 {
   HAL_UART_IRQHandler(&UART_Handle);
 }
-
 
 void USARTx_DMA_IRQHandler(void)
 {
