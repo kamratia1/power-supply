@@ -10,8 +10,14 @@
 #include "uart.h"
 #include "printf.h"
 
+typedef enum{
+  NOT_READY = 0,
+  READY=1
+}State_TypeDef;
+
 /* Private Variables ---------------------------------------------------------*/
 UART_HandleTypeDef UART_Handle;
+State_TypeDef UART_TxComplete = READY;
 
 
 /* Private Function Prototypes*/
@@ -53,8 +59,8 @@ void UART_Init(void)
   
   // Enable DMA clock
   DMAx_CLK_ENABLE();
-  
-  // Configure the DMA handler for reception process
+   
+  // Configure the DMA handler for transmission process
   DMATX_Handle.Instance                 = USARTx_TX_DMA_CHANNEL;
   DMATX_Handle.Init.Direction           = DMA_MEMORY_TO_PERIPH;
   DMATX_Handle.Init.PeriphInc           = DMA_PINC_DISABLE;
@@ -62,7 +68,7 @@ void UART_Init(void)
   DMATX_Handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
   DMATX_Handle.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
   DMATX_Handle.Init.Mode                = DMA_NORMAL;
-  DMATX_Handle.Init.Priority            = DMA_PRIORITY_LOW;
+  DMATX_Handle.Init.Priority            = DMA_PRIORITY_MEDIUM;
   HAL_DMA_Init(&DMATX_Handle);
 
   // Configure the DMA handler for reception process
@@ -73,8 +79,18 @@ void UART_Init(void)
   DMARX_Handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
   DMARX_Handle.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
   DMARX_Handle.Init.Mode                = DMA_NORMAL;
-  DMARX_Handle.Init.Priority            = DMA_PRIORITY_HIGH;
+  DMARX_Handle.Init.Priority            = DMA_PRIORITY_MEDIUM;
   HAL_DMA_Init(&DMARX_Handle);
+  
+  // Remap UART TX and RX DMA Channels from 2 and 3 to 4 and 5 respectively
+  if (DMATX_Handle.Instance == DMA1_Channel4)
+  {
+    __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_TX_DMA_CH4);
+  }
+  if (DMATX_Handle.Instance == DMA1_Channel5)
+  {
+    __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_RX_DMA_CH5);
+  }
   
    // Associate the initialized DMA handle to the UART handle
   __HAL_LINKDMA(&UART_Handle, hdmatx, DMATX_Handle);
@@ -91,18 +107,39 @@ void UART_Init(void)
   
 }
 
+//  Implemented here to use with printf library
+void _putchar(char character)
+{
+  //HAL_UART_Transmit_DMA(&UART_Handle, (uint8_t*) character, 1);    
+}
+
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+  /* Set transmission flag: trasfer complete*/
+  UART_TxComplete = READY; 
+
+}
+
 // Transmit string of any length onto UART peripheral
 void UART_Print(char out[])
 {
   //if UART transmit is busy, then wait before transmitting character
-  while (HAL_UART_GetState(&UART_Handle) == HAL_UART_STATE_BUSY_TX);    
-  HAL_UART_Transmit(&UART_Handle, (uint8_t *) out, strlen(out), 10); 
+  //while (HAL_UART_GetState(&UART_Handle) == HAL_UART_STATE_BUSY_TX);    
+  //HAL_UART_Transmit(&UART_Handle, (uint8_t *) out, strlen(out), 10); 
+  
+  UART_TxComplete = NOT_READY;
+  HAL_UART_Transmit_DMA(&UART_Handle, (uint8_t*) out, strlen(out));
+  while(UART_TxComplete != READY); 
+  //HAL_Delay(1);
 }
 
 void UART_Receive_DMA_Stop(void)
 {
-  // Stope character reception
-  HAL_UART_DMAStop(&UART_Handle);
+  // Stop character reception
+  //HAL_UART_DMAStop(&UART_Handle);
+  HAL_UART_AbortReceive(&UART_Handle);
+  
 }
 
 void UART_Receive_DMA_Start(uint8_t buffer[], uint8_t len)
