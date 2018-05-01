@@ -41,6 +41,7 @@ extern UART_HandleTypeDef UART_Handle;
 extern TIM_HandleTypeDef htim17;
 extern TIM_HandleTypeDef DebugTimerHandle;
 extern TIM_HandleTypeDef ControlTimerHandle;
+extern TIM_HandleTypeDef UI_TimerHandle;
 
 /******************************************************************************/
 /*            Cortex-M0 Processor Interruption and Exception Handlers         */ 
@@ -95,6 +96,11 @@ void DEBUG_TIMER_IRQHandler(void)
 void CONTROL_TIMER_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&ControlTimerHandle);
+}
+
+void UI_TIMER_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&UI_TimerHandle);
 }
 
 /**

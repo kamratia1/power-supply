@@ -1097,6 +1097,9 @@
                 <file>
                     <name>$PROJ_DIR$\..\Src\ui.c</name>
                 </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Src\ui_assets.c</name>
+                </file>
             </group>
         </group>
     </group>

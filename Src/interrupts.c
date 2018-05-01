@@ -63,5 +63,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *TimerHandle)
   {
     Control_TimerCallback();
   }  
+  
+  if (TimerHandle->Instance == UI_TIMER_TIM)
+  {
+    UI_TimerCallback();
+  }  
+  
 }
 

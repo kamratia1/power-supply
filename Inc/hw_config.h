@@ -6,9 +6,6 @@
 #ifndef __PINS_CONFIG_H__
 #define __PINS_CONFIG_H__
 
-// Function prototype for microsecond Delay
-void Delay_us(int us); // defined in system_state.c
-
 /* ADC Pins ------------------------------------------------------------------*/
 #define ADC_DMA_CHANNEL                                 DMA1_Channel1
 #define ADC_INSTANCE                                    ADC1

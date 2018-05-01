@@ -183,13 +183,13 @@ void LCD_SetAddrWindow(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height)
   LCD_SendData(0x00);
   LCD_SendData(x0);
   LCD_SendData(0x00);
-  LCD_SendData(x0+height);
+  LCD_SendData(x0+height-1);
   
   LCD_SendCommand(LCD_ROWSET);
   LCD_SendData(0x00);
   LCD_SendData(y0);
   LCD_SendData(0x00);
-  LCD_SendData(y0+width);
+  LCD_SendData(y0+width-1);
   
   LCD_SendCommand(LCD_MEMWRITE);
   
@@ -201,6 +201,33 @@ void drawPixel(uint16_t x, uint16_t y, uint16_t color)
   LCD_SendData(color >> 8);
   LCD_SendData(color);
   
+}
+
+void LCD_SendImage(uint8_t x0, uint8_t y0, const uint16_t image[])
+{
+  uint8_t width = image[0];
+  uint8_t height = image[1];  
+  uint16_t number_pairs = image[2];
+  uint16_t colour = 0;
+  uint16_t number = 0;
+  
+  LCD_SetAddrWindow(x0, y0, height, width);
+  
+  DC_HIGH();
+  CS_LOW(); 
+  
+  for(int i=3; i<(number_pairs*2)+3; i+=2)
+  {  
+    colour = image[i]; 
+    number = image[i+1];
+    for (int j=0; j<number; j++)
+    {
+      SPI_Write(colour >> 8);
+      SPI_Write(colour);
+    }    
+  }
+  
+  CS_HIGH();
 }
 
 void LCD_FillRectangle(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, uint16_t colour)

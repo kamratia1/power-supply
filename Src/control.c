@@ -25,6 +25,10 @@ static void Control_Task(void)
 {  
   // Check the state of the Output Switch and set accordingly
   SetOutputSw();        
+
+  // Set Output Voltage and current based on the encoder 
+  // Use a control loop?
+  
   
 }
 

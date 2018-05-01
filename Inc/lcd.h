@@ -57,5 +57,6 @@ void LCD_Init(void);
 void LCD_SetAddrWindow(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height);
 void LCD_FillRectangle(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, uint16_t colour);
 void drawPixel(uint16_t x, uint16_t y, uint16_t color);
+void LCD_SendImage(uint8_t x0, uint8_t y0, const uint16_t image[]);
 
 #endif
