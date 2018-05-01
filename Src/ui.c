@@ -20,25 +20,59 @@ static void UI_Task(void);
 TIM_HandleTypeDef UI_TimerHandle;
 extern const uint16_t switch_open[];
 extern const uint16_t switch_closed[];
+// Letters are 19 width, 20 height
+extern const uint16_t green_a[];
+extern const uint16_t green_v[];
+// Numbers are 16 width, 20 height
+extern const uint16_t green_zero[];
+extern const uint16_t green_one[];
+extern const uint16_t green_two[];
+extern const uint16_t green_three[];
+extern const uint16_t green_four[];
+extern const uint16_t green_five[];
+extern const uint16_t green_six[];
+extern const uint16_t green_seven[];
+extern const uint16_t green_eight[];
+extern const uint16_t green_nine[];
 
 OutputSw_TypeDef UI_OutputState;
 
-#define SWITCH_XPOS     85
+#define SWITCH_XPOS      85
 #define SWITCH_YPOS      85
+#define LETTER_WIDTH     19
+#define NUMBER_WIDTH     16
 
 // Draws the basic template
 void UI_Init(void)
 {
-  
+  // Fill in UI State
   UI_OutputState = Get_OutputSwState();
+  
+   
+  // Draw Stuff  
   fillScreen(BLACK); 
-  
-  
-  
-  // Draw Stuff
-  Enable_Bklight(GPIO_PIN_SET);  
   LCD_SendImage(SWITCH_XPOS, SWITCH_YPOS, switch_open);
-
+  
+  int xpos = 15;
+  int ypos = 15;
+  LCD_SendImage(xpos, ypos, green_zero);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_one);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_two);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_three);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH+5, ypos, green_v);
+  
+  xpos = 15;
+  ypos = 40;
+  LCD_SendImage(xpos=xpos, ypos, green_five);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_six);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_seven);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH, ypos, green_nine);
+  LCD_SendImage(xpos=xpos+NUMBER_WIDTH+5, ypos, green_a);
+  
+  
+  Enable_Bklight(GPIO_PIN_SET);  
+  
+  
 
   // Start UI Timer
   UI_TimerInit();
