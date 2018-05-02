@@ -70,11 +70,11 @@ class ImageObject(object):
 
 		return RLE_array
 
-img = ImageObject("green_eight.bmp")	
+img = ImageObject("characters1.bmp")	
 RLE = img.convert_to_RLE()
 
 with open("image.txt", "w") as file:
-	first_line = "const uint16_t green_[] = { "
+	first_line = "const uint16_t characters[] = { "
 	file.write(first_line)
 
 	for item in RLE:
