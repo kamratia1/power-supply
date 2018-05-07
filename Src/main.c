@@ -44,7 +44,7 @@ int main(void)
   LCD_Init();    
   Control_Init();
   SerialDebug_Init();
-  UI_Init();  
+  UI_Init();   
   
   // Infinite loop
   while (1)

@@ -9,5 +9,6 @@
 /* Function Prototypes ------------------------------------------------------*/
 void PWM_Init(void);
 void PWM_setDuty(uint16_t GPIO_Pin, uint16_t dutyCycle);
+uint16_t PWM_getRange(void);
 
 #endif

@@ -2,6 +2,9 @@
 * File Name          : control.c
 * Description        : Contains control Task
                        Handles the Power supply main control system
+
+@Reference: Interpolation code taken from: 
+https://www.electro-tech-online.com/threads/linear-interpolation-and-lookup-tables-c.147507/
 *******************************************************************************/
 
 #include "stm32f0xx_hal.h"
@@ -12,11 +15,16 @@
 #include "control.h"
 #include "system_state.h"
 #include "enable.h"
+#include "pwm.h"
+
+
 
 /* Function Prototypes -------------------------------------------------------*/
 static void Control_TimerInit(void);
 static void Control_Task(void);
 static void SetOutputSw(void);
+static void SetCurrentLimit(void);
+static void SetOutputVoltage(void);
 
 /* Private Variables ---------------------------------------------------------*/
 TIM_HandleTypeDef ControlTimerHandle;
@@ -27,15 +35,18 @@ static void Control_Task(void)
   SetOutputSw();        
 
   // Set Output Voltage and current based on the encoder 
-  // Use a control loop?
+  SetCurrentLimit();
+  SetOutputVoltage();
   
   
 }
 
+
+
 // Initialise the Control Task 
-// Set up any variables ...etc
 void Control_Init(void)
 {
+  PWM_setDuty(VSW_PWM_Pin, VSW_PWM_MAX);
   Control_TimerInit();
 }
 
@@ -72,9 +83,49 @@ static void SetOutputSw(void)
   if (Get_OutputSwState() == OUT_ENABLE)
   {
     Enable_Output(GPIO_PIN_SET);
+    Enable_VSW(GPIO_PIN_SET);
   }
   else
   {
     Enable_Output(GPIO_PIN_RESET);
+    Enable_VSW(GPIO_PIN_RESET);
   }  
 }
+
+static void SetCurrentLimit(void)
+{
+  static uint16_t pwmValueCurrent = 0;
+
+  // Only set pwm value if encoder value has changed
+  if (pwmValueCurrent != Get_EncoderCurrent())
+  {
+    pwmValueCurrent = Get_EncoderCurrent() * CURRENT_COURSE_RESOLUTION_MA * ISENSE_I_TO_V_GAIN;; 
+    PWM_setDuty(ISET_PWM_Pin, pwmValueCurrent);   
+  }
+}
+
+static void SetOutputVoltage(void)
+{  
+  static uint16_t pwmVsetVoltage = 0;
+  static int16_t pwmVswVoltage = 0;
+  
+  // Only set pwm value if encoder value has changed
+  if (pwmVsetVoltage != Get_EncoderVoltage())
+  {      
+    pwmVsetVoltage = Get_EncoderVoltage(); // voltage value at vset
+    
+    // Calculate VSW_Set voltage using equation
+    pwmVswVoltage = (CONST_GRADIENT*(pwmVsetVoltage + VSW_VOUT_DIFF_STEPS)) + CONST_INTERCEPT;
+    pwmVswVoltage /= EQ_MULTIPLIER;
+    
+    // Set limits to the switching converter output voltage
+    if (pwmVswVoltage <= VSW_PWM_MIN)   pwmVswVoltage = VSW_PWM_MIN;
+    if (pwmVswVoltage >= VSW_PWM_MAX)   pwmVswVoltage = VSW_PWM_MAX;
+    
+    PWM_setDuty(VSET_PWM_Pin, pwmVsetVoltage * VSET_V_TO_V_GAIN);
+    PWM_setDuty(VSW_PWM_Pin , pwmVswVoltage);
+    
+  }
+  
+}
+

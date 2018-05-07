@@ -8,7 +8,7 @@
 #include "hw_config.h"
 #include "pwm.h"
 
-#define PWM_FREQ        20000
+#define PWM_FREQ        14545
 
 /* Private Variables ---------------------------------------------------------*/
 TIM_HandleTypeDef TIM1_Handle;
@@ -21,20 +21,17 @@ void PWM_Init(void)
   // PWM Freq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
   // Duty Cycle is set by the OC Pulse variable and can be any value between 0 and Period
   // To maximize PWM resolution, the period is kept as high as possible, while keeping the prescaler low
-  // PWM Frequency is set to 20kHz as it is on the limit of human hearing, MCU Clock_Freq is 48MHz
   
   TIM_PWM_CLK_ENABLE();
   
   TIM_ClockConfigTypeDef sClockSourceConfig;
   TIM_MasterConfigTypeDef sMasterConfig;
-  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;
-  
-  
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;   
   
   TIM1_Handle.Instance = TIM1;
   TIM1_Handle.Init.Prescaler = 0;
   TIM1_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;
-  TIM1_Handle.Init.Period = (SystemCoreClock/((TIM1_Handle.Init.Prescaler + 1)*(PWM_FREQ)))-1; //2399;
+  TIM1_Handle.Init.Period = (SystemCoreClock/((TIM1_Handle.Init.Prescaler + 1)*(PWM_FREQ)))-1;
   TIM1_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   TIM1_Handle.Init.RepetitionCounter = 0;
   TIM1_Handle.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -120,7 +117,10 @@ void PWM_setDuty(uint16_t GPIO_Pin, uint16_t val)
       HAL_TIM_PWM_ConfigChannel(&TIM1_Handle, &sConfigOC, VSW_PWM_TIM_CHANNEL);
       HAL_TIM_PWM_Start(&TIM1_Handle, VSW_PWM_TIM_CHANNEL);
       break;      
-  }
-  
-  
+  }   
+}
+
+uint16_t PWM_getRange(void)
+{
+  return TIM1_Handle.Init.Period;
 }

@@ -60,7 +60,7 @@ uint16_t Get_EncoderVoltage(void)
   return State_EncoderVal.voltageStep;
 }
 
-uint16_t Get_EncodeCurrent(void)
+uint16_t Get_EncoderCurrent(void)
 {
   return State_EncoderVal.currentStep;
 }

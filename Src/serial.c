@@ -62,7 +62,7 @@ void Debug_TimerInit(void)
   DebugTimerHandle.Init.RepetitionCounter = 0;
   HAL_TIM_Base_Init(&DebugTimerHandle);
   
-  HAL_NVIC_SetPriority(DEBUG_TIMER_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(DEBUG_TIMER_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(DEBUG_TIMER_IRQn);    
   
   HAL_TIM_Base_Start_IT(&DebugTimerHandle);

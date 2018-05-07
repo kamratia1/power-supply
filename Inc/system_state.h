@@ -17,6 +17,8 @@
 #define NUM_STEPS_CURRENT               ( MAX_OUTPUT_CURRENT_MA / CURRENT_COURSE_RESOLUTION_MA )
 #define VOLTAGE_STEPS_FINE_MULTIPLIER   ( VOLTAGE_COURSE_RESOLUTION_MV / VOLTAGE_FINE_RESOLUTION_MV )
 
+#define NUM_STEPS_PER_VOLT              (NUM_STEPS_VOLTAGE/MAX_OUTPUT_VOLTAGE_V)         
+
 typedef enum
 {
   FLAG_RESET = 0,
@@ -43,8 +45,8 @@ typedef enum
 
 typedef enum
 {
-  OUT_DISABLE =  0,
-  OUT_ENABLE = 1  
+  OUT_DISABLE = 0,
+  OUT_ENABLE  = 1  
     
 }OutputSw_TypeDef;
 
