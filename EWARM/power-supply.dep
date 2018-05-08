@@ -316,6 +316,7 @@
             <file>$PROJ_DIR$\..\Src\ui_assets.c</file>
             <file>$PROJ_DIR$\power-supply\Obj\ui_assets.o</file>
             <file>$PROJ_DIR$\power-supply\Obj\ui_assets.pbi</file>
+            <file>$PROJ_DIR$\power-supply\Obj\ui_assets.__cstat.et</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
@@ -811,7 +812,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 57 145 70 44 42 261 59 199 18 277 27 113 107 165 2 263 0 24 91 136 82 81 66 12 36 233 303 262 259 252 187 141 10 51 100 67 196 63 147 180 37 53 95 20 297 101 85 188 304 34 174 118 195 112 210 48 189</file>
+                    <file> 57 145 70 261 136 18 277 27 113 165 2 263 0 24 91 188 304 233 303 262 259 252 187 141 10 51 100 67 196 63 147 180 37 53 95 20 297 101 85 82 44 59 199 81 42 66 107 12 36 34 174 118 195 112 210 48 189</file>
                 </tool>
             </inputs>
         </file>
@@ -1044,10 +1045,6 @@
             <name>$PROJ_DIR$\..\Src\serial.c</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 124</file>
-                </tool>
-                <tool>
                     <name>BICOMP</name>
                     <file> 29</file>
                 </tool>
@@ -1059,7 +1056,7 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 136 24 27 141 57 145 113 85 82 59 66 199 13 81 34 42 174 44 70 101 118 91 10 195 51 188 100 67 107 196 112 63 12 147 180 210 37 48 53 304 95 189 20 36 297 8 15 303 18 233 2 165 277 302</file>
+                    <file> 136 24 27 141 57 145 113 85 82 59 66 199 13 81 34 42 174 44 70 101 118 91 10 195 51 188 100 67 107 196 112 63 12 147 180 210 37 48 53 304 95 189 20 36 297 8 15 303 18 233 2 165 277 302 252</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
@@ -1287,10 +1284,6 @@
             <name>$PROJ_DIR$\..\Src\ui.c</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 282</file>
-                </tool>
-                <tool>
                     <name>BICOMP</name>
                     <file> 289</file>
                 </tool>
@@ -1341,10 +1334,6 @@
             <name>$PROJ_DIR$\..\Src\control.c</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 278</file>
-                </tool>
-                <tool>
                     <name>BICOMP</name>
                     <file> 254</file>
                 </tool>
@@ -1383,11 +1372,11 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 136 24 27 141 57 145 113 85 82 59 66 199 13 81 34 42 174 44 70 101 118 91 10 195 51 188 100 67 107 196 112 63 12 147 180 210 37 48 53 304 95 189 20 36 297 252 2</file>
+                    <file> 136 24 27 141 57 145 113 85 82 59 66 199 13 81 34 42 174 44 70 101 118 91 10 195 51 188 100 67 107 196 112 63 12 147 180 210 37 48 53 304 95 189 20 36 297 252 233 2</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 118 57 63 113 51 53 141 67 180 20 145 70 195 2 10 100 196 147 37 95 297 91 136 66 112 252 24 27 101 85 82 34 174 59 210 48 189 44 199 81 42 188 107 12 304 36</file>
+                    <file> 118 57 85 27 195 233 24 101 82 66 112 252 2 141 10 51 100 67 196 63 147 180 37 53 95 20 297 91 145 113 136 70 34 174 59 210 48 189 44 199 81 42 188 107 12 304 36</file>
                 </tool>
             </inputs>
         </file>
@@ -1806,6 +1795,10 @@
                 <tool>
                     <name>BICOMP</name>
                     <file> 310</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 311</file>
                 </tool>
             </outputs>
             <inputs>

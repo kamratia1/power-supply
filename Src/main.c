@@ -21,6 +21,10 @@
 #include "ui.h"
 
 /* Private variables ---------------------------------------------------------*/
+extern TaskState_TypeDef State_ControlTask;
+extern TaskState_TypeDef State_UITask;
+extern TaskState_TypeDef State_SerialTask;
+
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -49,7 +53,23 @@ int main(void)
   // Infinite loop
   while (1)
   {
-
+    if(State_ControlTask == TASK_READY)
+    {
+        State_ControlTask == TASK_NOT_READY;
+        Control_Task();
+    }
+    
+    if(State_UITask == TASK_READY)
+    {
+        State_UITask == TASK_NOT_READY;
+        UI_Task();
+    }
+    
+    if(State_SerialTask == TASK_READY)
+    {
+        State_SerialTask == TASK_NOT_READY;
+        Serial_Task();
+    }       
   }
 
 }

@@ -4,7 +4,7 @@ import serial
 from widgets import Slider, Meter, Value
 import random
 
-globalVref = 3.3
+globalVref = 3.32
 COM_port = "COM7"
 baudRate = 115200
 samplingPeriod_ms = 25
@@ -152,7 +152,7 @@ class StatisticsBox(object):
         # reference voltage
         #referenceVoltage = (globalVref * values[0]/float(adcRange)) 
 
-        globalVref = 2.021/(values[0]/float(adcRange))
+        globalVref = 2.048/(values[0]/float(adcRange))
         calculatedValues.append(globalVref)
         
 
@@ -169,7 +169,7 @@ class StatisticsBox(object):
         calculatedValues.append(linearRegInVoltage)
 
         # output voltage
-        outputVoltage = 10.09 * (globalVref * values[3]/float(adcRange))
+        outputVoltage = 10.2 * (globalVref * values[3]/float(adcRange))
         calculatedValues.append(outputVoltage)
 
         # sense current

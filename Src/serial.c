@@ -14,6 +14,7 @@
 #include "uart.h"
 #include "serial.h"
 #include "printf.h"
+#include "system_state.h"
 
 /* Definitions ---------------------------------------------------------------*/
 #define RX_BUFFER_SIZE       16
@@ -35,13 +36,13 @@ TIM_HandleTypeDef DebugTimerHandle;
 uint8_t RxBuffer[RX_BUFFER_SIZE];
 char str[64];
 uint16_t adc_values[6];
+extern TaskState_TypeDef State_SerialTask;
 
 /* Private Function Prototypes -----------------------------------------------*/
 static void ProcessCommand(void);
 static void Debug_TimerInit(void);
-static void Debug_Task(void);
 
-static void Debug_Task(void)
+void Serial_Task(void)
 {
    ProcessCommand();    // Process Command
    ADC_PrintReadings();  // Print all ADC values
@@ -50,10 +51,7 @@ static void Debug_Task(void)
 void Debug_TimerInit(void)
 {
   DEBUG_TIMER_CLK_ENABLE();
-    
-  // DebougTimerFreq = MCU_Clock_Freq/((Period+1)*(Prescaler+1))
-  // Period =((DEBOUNCE_TIMER_MS * MCU_Clock)/(Prescaler+1))-1 
-  
+      
   DebugTimerHandle.Instance = DEBUG_TIMER_TIM;
   DebugTimerHandle.Init.Prescaler = 127; // Set this to a (power of 2)-1 for integer maths
   DebugTimerHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -62,7 +60,7 @@ void Debug_TimerInit(void)
   DebugTimerHandle.Init.RepetitionCounter = 0;
   HAL_TIM_Base_Init(&DebugTimerHandle);
   
-  HAL_NVIC_SetPriority(DEBUG_TIMER_IRQn, 1, 0);
+  HAL_NVIC_SetPriority(DEBUG_TIMER_IRQn, 2, 0);
   HAL_NVIC_EnableIRQ(DEBUG_TIMER_IRQn);    
   
   HAL_TIM_Base_Start_IT(&DebugTimerHandle);
@@ -81,7 +79,8 @@ void SerialDebug_Init(void)
 
 void Serial_DebugTimerCallback(void)
 {
-  Debug_Task();
+  //Serial_Task();
+  State_SerialTask = TASK_READY;  
 }
 
 void ProcessCommand(void)

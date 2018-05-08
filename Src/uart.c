@@ -83,14 +83,8 @@ void UART_Init(void)
   HAL_DMA_Init(&DMARX_Handle);
   
   // Remap UART TX and RX DMA Channels from 2 and 3 to 4 and 5 respectively
-  if (DMATX_Handle.Instance == DMA1_Channel4)
-  {
-    __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_TX_DMA_CH4);
-  }
-  if (DMATX_Handle.Instance == DMA1_Channel5)
-  {
-    __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_RX_DMA_CH5);
-  }
+  __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_TX_DMA_CH4);
+  __HAL_DMA_REMAP_CHANNEL_ENABLE(DMA_REMAP_USART1_RX_DMA_CH5);
   
    // Associate the initialized DMA handle to the UART handle
   __HAL_LINKDMA(&UART_Handle, hdmatx, DMATX_Handle);

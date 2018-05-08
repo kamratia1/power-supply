@@ -29,7 +29,7 @@ void Enable_Init(void)
   
   GPIO_InitStruct.Pin = VSW_EN_Pin;
   HAL_GPIO_Init(VSW_EN_GPIO_Port, &GPIO_InitStruct);
-  Enable_VSW(GPIO_PIN_RESET);
+  Enable_VSW(GPIO_PIN_SET);
   
   GPIO_InitStruct.Pin = DISP_BKLIGHT_Pin;
   HAL_GPIO_Init(DISP_BKLIGHT_GPIO_Port, &GPIO_InitStruct);

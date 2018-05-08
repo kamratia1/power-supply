@@ -9,6 +9,6 @@
 
 void UI_Init(void);
 void UI_TimerCallback(void);
-
+void UI_Task(void);
 
 #endif

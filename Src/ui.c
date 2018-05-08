@@ -14,13 +14,13 @@
 
 /* Function Prototypes -------------------------------------------------------*/
 static void UI_TimerInit(void);
-static void UI_Task(void);
 
 /* Private Variables ---------------------------------------------------------*/
 TIM_HandleTypeDef UI_TimerHandle;
 extern const uint16_t switch_open[];
 extern const uint16_t switch_closed[];
 extern const uint16_t characters[];
+extern TaskState_TypeDef State_UITask;
 
 OutputSw_TypeDef UI_OutputState;
 
@@ -98,5 +98,6 @@ static void UI_TimerInit(void)
 
 void UI_TimerCallback(void)
 {
-  UI_Task();
+  //UI_Task();
+  State_UITask = TASK_READY;
 }

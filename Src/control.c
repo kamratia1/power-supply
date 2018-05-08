@@ -21,15 +21,15 @@ https://www.electro-tech-online.com/threads/linear-interpolation-and-lookup-tabl
 
 /* Function Prototypes -------------------------------------------------------*/
 static void Control_TimerInit(void);
-static void Control_Task(void);
 static void SetOutputSw(void);
 static void SetCurrentLimit(void);
 static void SetOutputVoltage(void);
 
 /* Private Variables ---------------------------------------------------------*/
 TIM_HandleTypeDef ControlTimerHandle;
+extern TaskState_TypeDef State_ControlTask;
 
-static void Control_Task(void)
+void Control_Task(void)
 {  
   // Check the state of the Output Switch and set accordingly
   SetOutputSw();        
@@ -37,8 +37,8 @@ static void Control_Task(void)
   // Set Output Voltage and current based on the encoder 
   SetCurrentLimit();
   SetOutputVoltage();
-  
-  
+  Update_OutputVoltage();
+  Update_OutputCurrent();
 }
 
 
@@ -75,7 +75,8 @@ static void Control_TimerInit(void)
 
 void Control_TimerCallback(void)
 {
-  Control_Task();  
+  //Control_Task();  
+  State_ControlTask = TASK_READY;
 }
 
 static void SetOutputSw(void)
@@ -83,12 +84,10 @@ static void SetOutputSw(void)
   if (Get_OutputSwState() == OUT_ENABLE)
   {
     Enable_Output(GPIO_PIN_SET);
-    Enable_VSW(GPIO_PIN_SET);
   }
   else
   {
     Enable_Output(GPIO_PIN_RESET);
-    Enable_VSW(GPIO_PIN_RESET);
   }  
 }
 

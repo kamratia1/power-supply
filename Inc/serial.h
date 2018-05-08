@@ -11,5 +11,6 @@
 /* Public Function Prototypes */
 void SerialDebug_Init(void);
 void Serial_DebugTimerCallback(void);
+void Serial_Task(void);
 
 #endif /* UART_H_ */

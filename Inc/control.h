@@ -27,6 +27,6 @@
 
 void Control_Init(void);
 void Control_TimerCallback(void);
-
+void Control_Task(void);
 
 #endif

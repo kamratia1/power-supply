@@ -17,7 +17,15 @@
 #define NUM_STEPS_CURRENT               ( MAX_OUTPUT_CURRENT_MA / CURRENT_COURSE_RESOLUTION_MA )
 #define VOLTAGE_STEPS_FINE_MULTIPLIER   ( VOLTAGE_COURSE_RESOLUTION_MV / VOLTAGE_FINE_RESOLUTION_MV )
 
-#define NUM_STEPS_PER_VOLT              (NUM_STEPS_VOLTAGE/MAX_OUTPUT_VOLTAGE_V)         
+#define NUM_STEPS_PER_VOLT              (NUM_STEPS_VOLTAGE/MAX_OUTPUT_VOLTAGE_V)  
+
+
+typedef enum
+{
+  TASK_NOT_READY = 0,
+  TASK_READY = 1
+    
+}TaskState_TypeDef;
 
 typedef enum
 {
@@ -50,7 +58,6 @@ typedef enum
     
 }OutputSw_TypeDef;
 
-// TODO - Maybe add something for I_LIMIT
 
 /* Function Prototypes -------------------------------------------------------*/
 void SystemState_Init(void);
@@ -59,10 +66,14 @@ uint16_t          Get_EncoderVoltage(void);
 uint16_t          Get_EncoderCurrent(void);
 EncoderSw_TypeDef Get_EncoderSwitchState(void);
 OutputSw_TypeDef  Get_OutputSwState(void);
+uint32_t          Get_OutputVoltage(void);
+uint32_t          Get_OutputCurrent(void);
 
 void Set_EncoderVoltage(int16_t val);
 void Set_EncoderCurrent(int16_t val);
 void Set_EncoderSwitchState(EncoderSw_TypeDef State);
 void Set_OutputSwState(OutputSw_TypeDef State);
+void Update_OutputVoltage(void);
+void Update_OutputCurrent(void);
 
 #endif
