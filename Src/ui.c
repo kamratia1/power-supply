@@ -24,16 +24,27 @@ extern const uint16_t A_25[];
 extern const uint16_t V_25[];
 extern const uint16_t A_18[];
 extern const uint16_t V_18[];
-extern const uint16_t zero_25_1bit[];
-extern const uint16_t one_25_1bit[];
-extern const uint16_t two_25_1bit[];
-extern const uint16_t three_25_1bit[];
-extern const uint16_t four_25_1bit[];
-extern const uint16_t five_25_1bit[];
-extern const uint16_t six_25_1bit[];
-extern const uint16_t seven_25_1bit[];
-extern const uint16_t eight_25_1bit[];
-extern const uint16_t nine_25_1bit[];
+extern uint16_t zero_25_1bit[];
+extern uint16_t one_25_1bit[];
+extern uint16_t two_25_1bit[];
+extern uint16_t three_25_1bit[];
+extern uint16_t four_25_1bit[];
+extern uint16_t five_25_1bit[];
+extern uint16_t six_25_1bit[];
+extern uint16_t seven_25_1bit[];
+extern uint16_t eight_25_1bit[];
+extern uint16_t nine_25_1bit[];
+
+extern uint16_t zero_18_1bit[];
+extern uint16_t one_18_1bit[];
+extern uint16_t two_18_1bit[];
+extern uint16_t three_18_1bit[];
+extern uint16_t four_18_1bit[];
+extern uint16_t five_18_1bit[];
+extern uint16_t six_18_1bit[];
+extern uint16_t seven_18_1bit[];
+extern uint16_t eight_18_1bit[];
+extern uint16_t nine_18_1bit[];
 
 extern TaskState_TypeDef State_UITask;
 
@@ -79,10 +90,25 @@ void UI_Init(void)
   LCD_SendMonoImage(xstart+64+POINT_OFFSET, ypos, nine_25_1bit, COLOUR);
   LCD_SendImageColoured(xstart+94, ypos, A_25, COLOUR);
   
-  ypos = 78;
+  // White
+  ypos = 78; 
+  LCD_SendMonoImage(xstart,    ypos, one_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+11, ypos, zero_18_1bit, WHITE);
+  // decimal point
+  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);
+  LCD_SendMonoImage(xstart+22+POINT_OFFSET-1, ypos, two_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+33+POINT_OFFSET-1, ypos, three_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+44+POINT_OFFSET-1, ypos, four_18_1bit, WHITE);    
   LCD_SendImage(xstart+65, ypos, V_18);
   
   ypos = 103;
+  //LCD_SendMonoImage(xstart,    ypos, one_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+11, ypos, nine_18_1bit, WHITE);
+  // decimal point
+  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);
+  LCD_SendMonoImage(xstart+22+POINT_OFFSET-1, ypos, six_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+33+POINT_OFFSET-1, ypos, seven_18_1bit, WHITE);
+  LCD_SendMonoImage(xstart+44+POINT_OFFSET-1, ypos, eight_18_1bit, WHITE);     
   LCD_SendImage(xstart+65, ypos, A_18);
   
   
