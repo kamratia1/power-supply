@@ -111,7 +111,7 @@ def convert_to_1bit(imageObject, file_name):
 
 
 #file_names = ["five_25.png", "six_25.png", "seven_25.png", "eight_25.png", "nine_25.png"]
-file_names = ["eight_25.png"]
+file_names = ["one_25.png"]
 
 for file in file_names:
 	img = ImageObject(file)	

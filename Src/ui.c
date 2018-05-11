@@ -88,7 +88,7 @@ void UI_Init(void)
   
   
   
-  //Enable_Bklight(GPIO_PIN_SET);     
+  Enable_Bklight(GPIO_PIN_SET);     
 
   // Start UI Timer
   UI_TimerInit();
