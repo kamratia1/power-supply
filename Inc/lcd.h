@@ -10,6 +10,7 @@
 
 /* Definitions ---------------------------------------------------------------*/
 
+
 // Macros
 #define CS_HIGH()       HAL_GPIO_WritePin( DISP_CS_GPIO_Port,  DISP_CS_Pin,  GPIO_PIN_SET   )
 #define CS_LOW()        HAL_GPIO_WritePin( DISP_CS_GPIO_Port,  DISP_CS_Pin,  GPIO_PIN_RESET )
@@ -58,5 +59,7 @@ void LCD_SetAddrWindow(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height);
 void LCD_FillRectangle(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, uint16_t colour);
 void drawPixel(uint16_t x, uint16_t y, uint16_t color);
 void LCD_SendImage(uint8_t x0, uint8_t y0, const uint16_t image[]);
+void LCD_SendImageColoured(uint8_t x0, uint8_t y0, const uint16_t image[], uint16_t colour);
+void LCD_SendMonoImage(uint8_t x0, uint8_t y0, const uint16_t image[], uint16_t colour);
 
 #endif

@@ -230,6 +230,105 @@ void LCD_SendImage(uint8_t x0, uint8_t y0, const uint16_t image[])
   CS_HIGH();
 }
 
+void LCD_SendImageColoured(uint8_t x0, uint8_t y0, const uint16_t image[], uint16_t colour)
+{
+  uint8_t width = image[0];
+  uint8_t height = image[1];  
+  uint16_t number_pairs = image[2];
+  uint16_t colour_16bit = 0;
+  uint16_t number = 0;
+  
+  LCD_SetAddrWindow(x0, y0, height, width);
+  
+  DC_HIGH();
+  CS_LOW(); 
+  
+  uint16_t mask = 0;
+  
+  /*switch(colour)
+  {
+    case 'r':
+      mask = RED;
+      break;
+    
+    case 'g':
+      mask = GREEN;
+      break;
+    
+    case 'b':
+      mask = BLUE;
+      break;    
+  }*/
+  
+  for(int i=3; i<(number_pairs*2)+3; i+=2)
+  {  
+    colour_16bit = image[i] & colour; // mask the colour 
+    number = image[i+1];
+    for (int j=0; j<number; j++)
+    {
+      SPI_Write(colour_16bit >> 8);
+      SPI_Write(colour_16bit);
+    }    
+  }
+  
+  CS_HIGH();
+}
+
+void LCD_SendMonoImage(uint8_t x0, uint8_t y0, const uint16_t image[], uint16_t colour)
+{
+  uint8_t width = image[0];
+  uint8_t height = image[1];  
+  
+  LCD_SetAddrWindow(x0, y0, height, width);
+  
+  DC_HIGH();
+  CS_LOW(); 
+  
+  //uint16_t mask = 0;
+  
+  /*switch(colour)
+  {
+    case 'r':
+      mask = RED;
+      break;
+    
+    case 'g':
+      mask = GREEN;
+      break;
+    
+    case 'b':
+      mask = BLUE;
+      break;  
+    
+    case 'w':
+      mask = WHITE;
+      break;
+  }*/
+  
+  uint16_t row;
+  uint16_t bit;
+  uint16_t colour_16bit;
+  
+  for (int i=0; i<height; i++) // interate through each row
+  {
+    row = image[i+2];   // offset by two as first 2 values are width and height
+    for (int j=width; j>0; j--)
+    {
+      bit = (row >> j) & 1; // get the bit value
+      
+      // if bit is zero then colour is black otherwise white masked with the colour
+      if(bit == 0) colour_16bit = BLACK;
+      else         colour_16bit = WHITE & colour;
+      
+      SPI_Write(colour_16bit >> 8);
+      SPI_Write(colour_16bit);
+    }
+  }
+  
+  CS_HIGH();  
+}
+
+
 void LCD_FillRectangle(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, uint16_t colour)
 {
   LCD_SetAddrWindow(x0, y0, height, width);

@@ -1160,6 +1160,57 @@
     <group>
         <name>Application</name>
         <group>
+            <name>Inc</name>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\adc.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\buttons.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\control.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\enable.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\encoder.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\graphics.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\interrupts.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\lcd.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\main.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\printf.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\pwm.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\rtos.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\serial.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\system_state.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\uart.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Inc\ui.h</name>
+            </file>
+        </group>
+        <group>
             <name>Src</name>
             <group>
                 <name>Control</name>

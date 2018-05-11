@@ -1,10 +1,9 @@
-# Just a scratch space to test code
+def digits(n):
+	ds = []
+	while n > 0:
+		ds.append(n % 10)
+		n /= 10
+	return ds
 
-import random
 
-adcRange = 4095
-
-print adcRange
-print float(adcRange)
-
-print 13/float(adcRange)
+print digits(1028)

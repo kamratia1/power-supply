@@ -70,27 +70,52 @@ class ImageObject(object):
 
 		return RLE_array
 
-img = ImageObject("characters1.bmp")	
-RLE = img.convert_to_RLE()
 
-with open("image.txt", "w") as file:
-	first_line = "const uint16_t characters[] = { "
-	file.write(first_line)
+def convert_to_1bit(imageObject, file_name):
+	image_array1bit = []
+	index = 0
+	word = ""
+	for pixel in imageObject.image_array:
+		if pixel == "0x0":
+			word+= "0"
+		else:
+			word+="1"
 
-	for item in RLE:
-		file.write(str(item) + ", ")
+		index+=1
+		if index >= 16:
 
-	file.write(" };")
-
-
-
-
-
-
+			print word
+			index = 0
+			# appends the hex value
+			image_array1bit.append(hex(int(word, 2)))
+			word = ""
 
 
+	with open("single_bit.txt", "a") as file:
+		first_line = "const uint16_t " +  str(file_name[:-4]) + "_1bit[] = { "
+		file.write(first_line)
+
+		file.write(str(hex(imageObject.width)) + ", ")
+		file.write(str(hex(imageObject.height)) + ", ")
 
 
+		index = 1
+		for item in image_array1bit:
+			if index < len(image_array1bit):
+				file.write(str(item) + ", ")
+			else:
+				file.write(str(item))
+			index+=1
+
+		file.write(" };\n")
+
+
+#file_names = ["five_25.png", "six_25.png", "seven_25.png", "eight_25.png", "nine_25.png"]
+file_names = ["eight_25.png"]
+
+for file in file_names:
+	img = ImageObject(file)	
+	convert_to_1bit(img, file)
 
 
 

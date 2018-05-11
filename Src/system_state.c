@@ -10,6 +10,7 @@
 #include "hw_config.h"
 #include "adc.h"
 
+
 // Stores the Encoder Value for Voltage and Current
 typedef struct
 {
@@ -40,9 +41,10 @@ TaskState_TypeDef State_SerialTask      = TASK_NOT_READY;
 
 
 void SystemState_Init(void)
-{
+{  
   Set_OutputSwState(OUT_DISABLE);
   Set_EncoderSwitchState(COARSE_VOLTAGE);
+  
   Set_EncoderVoltage(0);
   Set_EncoderCurrent(0);  
 }
@@ -104,7 +106,7 @@ uint32_t Get_OutputCurrent(void)
 
 void Update_OutputVoltage(void)
 {
-// equation values are for output voltage microvolts
+// equation values are for output voltage in microvolts
 #define VOLTAGE_EQ_GRADIENT     8230
 #define VOLTAGE_EQ_INTERCEPT    470190  
 #define VOLTAGE_EQ_MULTIPLER    1000    // 1000 changes microvolts to millivolts

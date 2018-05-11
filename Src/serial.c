@@ -44,8 +44,12 @@ static void Debug_TimerInit(void);
 
 void Serial_Task(void)
 {
-   ProcessCommand();    // Process Command
-   ADC_PrintReadings();  // Print all ADC values
+  if(State_SerialTask == TASK_READY)
+  {
+      State_SerialTask = TASK_NOT_READY;
+      ProcessCommand();    // Process Command
+      ADC_PrintReadings();  // Print all ADC values
+  }
 }
 
 void Debug_TimerInit(void)

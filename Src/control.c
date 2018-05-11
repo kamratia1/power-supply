@@ -17,8 +17,6 @@ https://www.electro-tech-online.com/threads/linear-interpolation-and-lookup-tabl
 #include "enable.h"
 #include "pwm.h"
 
-
-
 /* Function Prototypes -------------------------------------------------------*/
 static void Control_TimerInit(void);
 static void SetOutputSw(void);
@@ -31,14 +29,20 @@ extern TaskState_TypeDef State_ControlTask;
 
 void Control_Task(void)
 {  
-  // Check the state of the Output Switch and set accordingly
-  SetOutputSw();        
 
-  // Set Output Voltage and current based on the encoder 
-  SetCurrentLimit();
-  SetOutputVoltage();
-  Update_OutputVoltage();
-  Update_OutputCurrent();
+  if(State_ControlTask == TASK_READY)
+    {
+        State_ControlTask = TASK_NOT_READY;
+        
+        // Check the state of the Output Switch and set accordingly
+        SetOutputSw();        
+
+        // Set Output Voltage and current based on the encoder 
+        SetCurrentLimit();
+        SetOutputVoltage();
+        Update_OutputVoltage();
+        Update_OutputCurrent();
+    }
 }
 
 

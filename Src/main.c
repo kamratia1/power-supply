@@ -21,10 +21,6 @@
 #include "ui.h"
 
 /* Private variables ---------------------------------------------------------*/
-extern TaskState_TypeDef State_ControlTask;
-extern TaskState_TypeDef State_UITask;
-extern TaskState_TypeDef State_SerialTask;
-
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -33,11 +29,13 @@ int main(void)
 {
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
+  
+  // EEPROM Emulation was desired but takes up too much flash memory
+  
   /* Configure the system clock */
   SystemClock_Config();
-  
-  /* Initialise Hardware peripherals */
+   
+  /* Initialise Hardware peripherals */  
   SystemState_Init();
   UART_Init();
   Enable_Init();
@@ -49,27 +47,14 @@ int main(void)
   Control_Init();
   SerialDebug_Init();
   UI_Init();   
+
   
   // Infinite loop
   while (1)
   {
-    if(State_ControlTask == TASK_READY)
-    {
-        State_ControlTask == TASK_NOT_READY;
-        Control_Task();
-    }
-    
-    if(State_UITask == TASK_READY)
-    {
-        State_UITask == TASK_NOT_READY;
-        UI_Task();
-    }
-    
-    if(State_SerialTask == TASK_READY)
-    {
-        State_SerialTask == TASK_NOT_READY;
-        Serial_Task();
-    }       
+    Control_Task();
+    UI_Task();
+    Serial_Task();
   }
 
 }
