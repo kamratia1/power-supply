@@ -117,7 +117,7 @@ void ADC_Init(void)
   // Configure ADC Channels
   sConfig.Channel = VREF_FILT_ADC_CHANNEL;
   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;       // ADC Channel 0
-  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
   HAL_ADC_ConfigChannel(&ADC_Handle, &sConfig);
 
   sConfig.Channel = VIN_ADC_CHANNEL;    // ADC Channel 1

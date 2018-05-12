@@ -64,7 +64,7 @@ void Encoder_Init(void)
 void Encoder_IRQ_Callback(void)
 {
   static int16_t encoderVoltage = 0;
-  static int16_t encoderCurrent = 0;
+  static int16_t encoderCurrent = CURRENT_INIT_VALUE;    
   unsigned char result = Encoder_Process(); 
   EncoderSw_TypeDef EncoderState = Get_EncoderSwitchState();
   

@@ -65,71 +65,76 @@ void UI_Init(void)
   
   LCD_SendImage(SWITCH_XPOS, SWITCH_YPOS, switch_open);
   
+  // Measured Voltage and Current
   int xstart = 10;
-  int ypos = 8;
-#define POINT_OFFSET    5
-  
-  LCD_SendMonoImage(xstart,    ypos, one_25_1bit, GREEN);
-  LCD_SendMonoImage(xstart+16, ypos, zero_25_1bit, GREEN);
-  // decimal point
-  LCD_FillRectangle(xstart+34, ypos+21, 4, 4, GREEN);
-  LCD_SendMonoImage(xstart+32+POINT_OFFSET, ypos, two_25_1bit, GREEN);
-  LCD_SendMonoImage(xstart+48+POINT_OFFSET, ypos, three_25_1bit, GREEN);
-  LCD_SendMonoImage(xstart+64+POINT_OFFSET, ypos, four_25_1bit, GREEN);  
+  int ypos = 8; 
+  drawDigits25pt(Get_OutputVoltage(), xstart, ypos, GREEN);
+  LCD_FillRectangle(xstart+34, ypos+21, 4, 4, GREEN);     // decimal point
   LCD_SendImageColoured(xstart+94, ypos, V_25, GREEN);
   
   ypos = 42;
-  //LCD_SendMonoImage(xstart,    ypos, five_25_1bit, GREEN);
-#define COLOUR  RED     
+  drawDigits25pt(Get_OutputCurrent(), xstart, ypos, RED);
+  LCD_FillRectangle(xstart+34, ypos+21, 4, 4, RED);
+  LCD_SendImageColoured(xstart+94, ypos, A_25, RED);
   
-  LCD_SendMonoImage(xstart+16, ypos, zero_25_1bit, COLOUR);
-  // decimal point
-  LCD_FillRectangle(xstart+34, ypos+21, 4, 4, COLOUR);
-  LCD_SendMonoImage(xstart+32+POINT_OFFSET, ypos, three_25_1bit, COLOUR);
-  LCD_SendMonoImage(xstart+48+POINT_OFFSET, ypos, four_25_1bit, COLOUR);
-  LCD_SendMonoImage(xstart+64+POINT_OFFSET, ypos, nine_25_1bit, COLOUR);
-  LCD_SendImageColoured(xstart+94, ypos, A_25, COLOUR);
-  
-  // White
+  // Set Voltage and Current Text
+  xstart = 10;
   ypos = 78; 
-  LCD_SendMonoImage(xstart,    ypos, one_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+11, ypos, zero_18_1bit, WHITE);
-  // decimal point
-  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);
-  LCD_SendMonoImage(xstart+22+POINT_OFFSET-1, ypos, two_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+33+POINT_OFFSET-1, ypos, three_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+44+POINT_OFFSET-1, ypos, four_18_1bit, WHITE);    
-  LCD_SendImage(xstart+65, ypos, V_18);
+  drawDigits18pt(Get_DesiredVoltage(), xstart, ypos, WHITE);
+  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);     // decimal point
+  LCD_SendImage(xstart+65, ypos, V_18);  
   
   ypos = 103;
-  //LCD_SendMonoImage(xstart,    ypos, one_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+11, ypos, nine_18_1bit, WHITE);
-  // decimal point
-  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);
-  LCD_SendMonoImage(xstart+22+POINT_OFFSET-1, ypos, six_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+33+POINT_OFFSET-1, ypos, seven_18_1bit, WHITE);
-  LCD_SendMonoImage(xstart+44+POINT_OFFSET-1, ypos, eight_18_1bit, WHITE);     
+  drawDigits18pt(Get_DesiredCurrent(), xstart, ypos, WHITE);
+  LCD_FillRectangle(xstart+24, ypos+15, 3, 3, WHITE);     // decimal point
   LCD_SendImage(xstart+65, ypos, A_18);
-  
-  
-  
-  
+    
   Enable_Bklight(GPIO_PIN_SET);     
 
   // Start UI Timer
-  UI_TimerInit();
-  
+  UI_TimerInit();  
 }
 
 void UI_Task(void)
 {
+  static uint16_t ui_desiredVoltage;
+  static uint16_t ui_desiredCurrent;
+  static uint16_t ui_actualVoltage;
+  static uint16_t ui_actualCurrent;
+  
   if(State_UITask == TASK_READY)
   {
       State_UITask = TASK_NOT_READY;
       
-      // Update Desired Voltage and Current
-      
+    // Update Desired Voltage and Current
+     if (Get_DesiredVoltage() != ui_desiredVoltage)
+     {
+        ui_desiredVoltage = Get_DesiredVoltage();
+        drawDigits18pt(ui_desiredVoltage, 10, 78, WHITE);
+     }
+
+     if (Get_DesiredCurrent() != ui_desiredCurrent)
+     {
+        ui_desiredCurrent = Get_DesiredCurrent();
+        drawDigits18pt(ui_desiredCurrent, 10, 103, WHITE);
+     }
+     
       // Update Measured Voltage and Current
+     if (Get_OutputVoltage() != ui_actualVoltage)
+     {
+       int16_t diff = Get_OutputVoltage() - ui_actualVoltage;
+       if (diff > 10 || diff < -10)
+       {
+          ui_actualVoltage = Get_OutputVoltage();        
+          drawDigits25pt(ui_actualVoltage, 10, 8, GREEN);
+       }
+     }
+     
+     if (Get_OutputCurrent() != ui_actualCurrent)
+     {
+        ui_actualCurrent = Get_OutputCurrent();
+        drawDigits25pt(ui_actualCurrent, 10, 42, RED);
+     }
       
 
       // Update Switch State if state has changed
@@ -173,4 +178,149 @@ static void UI_TimerInit(void)
 void UI_TimerCallback(void)
 {
   State_UITask = TASK_READY;
+}
+
+uint8_t* getDigits(uint16_t number)
+{
+  // digits array has to be static in order to return it
+  static uint8_t digits_array[5];
+  
+  // set array to zero
+  for(int i=0; i<5; i++)
+  {
+    digits_array[i] = 0;
+  }
+  
+  uint8_t index = 4;
+  while(number > 0)
+  {
+     digits_array[index] = number % 10;
+     number /= 10;
+     index--;
+  }
+  
+  return digits_array;
+}
+
+void drawDigits25pt(uint16_t number, uint8_t xstart, uint8_t ypos, uint16_t colour)
+{
+    uint8_t* digits;
+    digits = getDigits(number);
+    
+    uint8_t xpos = 0;
+    uint8_t digit = 0;
+    uint8_t offset[] = {0, 16, 32, 48, 64}; 
+    uint8_t point_offset = 0;
+    
+    for(uint8_t i=0; i<5; i++)
+    {
+      digit = *(digits + i);
+      
+      if (i>=2) point_offset = 5;      // adding the decimal point offset        
+      xpos = xstart + offset[i] + point_offset;
+      
+      // if first digit is zero, blank out that area of the screen
+      if (i == 0 && digit == 0)
+      {
+        LCD_FillRectangle(xpos, ypos, 16, 25, BLACK);
+      }
+      else
+      {
+        switch(digit)
+        {
+          case 0:
+            LCD_SendMonoImage(xpos, ypos, zero_25_1bit, colour);
+            break;
+          case 1:
+            LCD_SendMonoImage(xpos, ypos, one_25_1bit, colour);
+            break;
+          case 2:
+            LCD_SendMonoImage(xpos, ypos, two_25_1bit, colour);
+            break;
+          case 3:
+            LCD_SendMonoImage(xpos, ypos, three_25_1bit, colour);
+            break;
+          case 4:
+            LCD_SendMonoImage(xpos, ypos, four_25_1bit, colour);
+            break;
+          case 5:
+            LCD_SendMonoImage(xpos, ypos, five_25_1bit, colour);
+            break;
+          case 6:
+            LCD_SendMonoImage(xpos, ypos, six_25_1bit, colour);
+            break;
+          case 7:
+            LCD_SendMonoImage(xpos, ypos, seven_25_1bit, colour);
+            break;
+          case 8:
+            LCD_SendMonoImage(xpos, ypos, eight_25_1bit, colour);
+            break;
+          case 9:
+            LCD_SendMonoImage(xpos, ypos, nine_25_1bit, colour);
+            break;
+        }
+      }
+    }     
+}
+
+
+void drawDigits18pt(uint16_t number, uint8_t xstart, uint8_t ypos, uint16_t colour)
+{
+    uint8_t* digits;
+    digits = getDigits(number);
+    
+    uint8_t xpos = 0;
+    uint8_t digit = 0;
+    uint8_t offset[] = {0, 11, 22, 33, 44}; 
+    uint8_t point_offset = 0;
+    
+    for(uint8_t i=0; i<5; i++)
+    {
+      digit = *(digits + i);
+      
+      if (i>=2) point_offset = 4;      // adding the decimal point offset        
+      xpos = xstart + offset[i] + point_offset;
+      
+      // if first digit is zero, blank out that area of the screen
+      if (i == 0 && digit == 0)
+      {
+        LCD_FillRectangle(xpos, ypos, 11, 18, BLACK);
+      }
+      else
+      {
+        switch(digit)
+        {
+          case 0:
+            LCD_SendMonoImage(xpos, ypos, zero_18_1bit, colour);
+            break;
+          case 1:
+            LCD_SendMonoImage(xpos, ypos, one_18_1bit, colour);
+            break;
+          case 2:
+            LCD_SendMonoImage(xpos, ypos, two_18_1bit, colour);
+            break;
+          case 3:
+            LCD_SendMonoImage(xpos, ypos, three_18_1bit, colour);
+            break;
+          case 4:
+            LCD_SendMonoImage(xpos, ypos, four_18_1bit, colour);
+            break;
+          case 5:
+            LCD_SendMonoImage(xpos, ypos, five_18_1bit, colour);
+            break;
+          case 6:
+            LCD_SendMonoImage(xpos, ypos, six_18_1bit, colour);
+            break;
+          case 7:
+            LCD_SendMonoImage(xpos, ypos, seven_18_1bit, colour);
+            break;
+          case 8:
+            LCD_SendMonoImage(xpos, ypos, eight_18_1bit, colour);
+            break;
+          case 9:
+            LCD_SendMonoImage(xpos, ypos, nine_18_1bit, colour);
+            break;
+        }
+      }
+    }     
 }

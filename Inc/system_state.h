@@ -12,6 +12,7 @@
 #define VOLTAGE_COURSE_RESOLUTION_MV    100
 #define VOLTAGE_FINE_RESOLUTION_MV      10
 #define CURRENT_COURSE_RESOLUTION_MA    5
+#define CURRENT_INIT_VALUE              1
 
 #define NUM_STEPS_VOLTAGE               ((MAX_OUTPUT_VOLTAGE_V * 1000) / VOLTAGE_FINE_RESOLUTION_MV )
 #define NUM_STEPS_CURRENT               ( MAX_OUTPUT_CURRENT_MA / CURRENT_COURSE_RESOLUTION_MA )
@@ -66,6 +67,10 @@ uint16_t          Get_EncoderVoltage(void);
 uint16_t          Get_EncoderCurrent(void);
 EncoderSw_TypeDef Get_EncoderSwitchState(void);
 OutputSw_TypeDef  Get_OutputSwState(void);
+// Get the Set values for voltage and current
+uint16_t          Get_DesiredVoltage(void);
+uint16_t          Get_DesiredCurrent(void);
+// Get the measured values for voltage and current
 uint32_t          Get_OutputVoltage(void);
 uint32_t          Get_OutputCurrent(void);
 

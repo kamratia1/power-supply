@@ -3,6 +3,7 @@ def digits(n):
 	while n > 0:
 		ds.append(n % 10)
 		n /= 10
+		print ds
 	return ds
 
 

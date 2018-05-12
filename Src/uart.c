@@ -17,7 +17,7 @@ typedef enum{
 
 /* Private Variables ---------------------------------------------------------*/
 UART_HandleTypeDef UART_Handle;
-State_TypeDef UART_TxComplete = READY;
+volatile State_TypeDef UART_TxComplete = READY;
 
 
 /* Private Function Prototypes*/

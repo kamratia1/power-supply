@@ -46,7 +46,7 @@ void SystemState_Init(void)
   Set_EncoderSwitchState(COARSE_VOLTAGE);
   
   Set_EncoderVoltage(0);
-  Set_EncoderCurrent(0);  
+  Set_EncoderCurrent(CURRENT_INIT_VALUE);  
 }
 
 
@@ -81,6 +81,16 @@ EncoderSw_TypeDef Get_EncoderSwitchState(void)
 void Set_EncoderSwitchState(EncoderSw_TypeDef State)
 {
   State_EncoderSw = State;  
+}
+
+uint16_t Get_DesiredVoltage(void)
+{
+  return Get_EncoderVoltage() * VOLTAGE_FINE_RESOLUTION_MV;
+}
+
+uint16_t Get_DesiredCurrent(void)
+{
+  return Get_EncoderCurrent() * CURRENT_COURSE_RESOLUTION_MA;
 }
 
 // Get and Set the Output Enable Switch State
