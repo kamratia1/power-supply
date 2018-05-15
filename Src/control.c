@@ -125,7 +125,7 @@ static void SetOutputVoltage(void)
     if (pwmVswVoltage <= VSW_PWM_MIN)   pwmVswVoltage = VSW_PWM_MIN;
     if (pwmVswVoltage >= VSW_PWM_MAX)   pwmVswVoltage = VSW_PWM_MAX;
     
-    PWM_setDuty(VSET_PWM_Pin, pwmVsetVoltage * VSET_V_TO_V_GAIN);
+    PWM_setDuty(VSET_PWM_Pin, (pwmVsetVoltage * VSET_V_TO_V_GAIN)-10);
     PWM_setDuty(VSW_PWM_Pin , pwmVswVoltage);
     
   }

@@ -11,8 +11,8 @@
 #define MAX_OUTPUT_CURRENT_MA           1000
 #define VOLTAGE_COURSE_RESOLUTION_MV    100
 #define VOLTAGE_FINE_RESOLUTION_MV      10
-#define CURRENT_COURSE_RESOLUTION_MA    5
-#define CURRENT_INIT_VALUE              1
+#define CURRENT_COURSE_RESOLUTION_MA    10
+#define CURRENT_INIT_VALUE              1       // This specifies the minimum current step
 
 #define NUM_STEPS_VOLTAGE               ((MAX_OUTPUT_VOLTAGE_V * 1000) / VOLTAGE_FINE_RESOLUTION_MV )
 #define NUM_STEPS_CURRENT               ( MAX_OUTPUT_CURRENT_MA / CURRENT_COURSE_RESOLUTION_MA )

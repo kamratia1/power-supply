@@ -122,12 +122,12 @@ void UI_Task(void)
       // Update Measured Voltage and Current
      if (Get_OutputVoltage() != ui_actualVoltage)
      {
-       int16_t diff = Get_OutputVoltage() - ui_actualVoltage;
-       if (diff > 10 || diff < -10)
-       {
+       //int16_t diff = Get_OutputVoltage() - ui_actualVoltage;
+       //if (diff > 10 || diff < -10)
+       //{
           ui_actualVoltage = Get_OutputVoltage();        
           drawDigits25pt(ui_actualVoltage, 10, 8, GREEN);
-       }
+       //}
      }
      
      if (Get_OutputCurrent() != ui_actualCurrent)

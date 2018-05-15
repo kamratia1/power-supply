@@ -120,16 +120,45 @@ void Update_OutputVoltage(void)
 #define VOLTAGE_EQ_GRADIENT     8230
 #define VOLTAGE_EQ_INTERCEPT    470190  
 #define VOLTAGE_EQ_MULTIPLER    1000    // 1000 changes microvolts to millivolts
- 
+  
+  static int32_t adcValueFilt = 0;  // filtered ADC value
+  
   uint16_t adcValue = ADC_getReading(VOUT_ADC_Pin);
-  uint32_t val =   (adcValue * VOLTAGE_EQ_GRADIENT) + VOLTAGE_EQ_INTERCEPT; 
-  val = val/VOLTAGE_EQ_MULTIPLER;      
-
-  State_MeasuredVal.outputVoltage = val;   
+  adcValueFilt = (adcValueFilt << 2) - adcValueFilt;
+  adcValueFilt += adcValue;
+  adcValueFilt = adcValueFilt >> 2;
+    
+  uint32_t val =   (adcValueFilt * VOLTAGE_EQ_GRADIENT) + VOLTAGE_EQ_INTERCEPT; 
+  val = val/VOLTAGE_EQ_MULTIPLER; 
+  
+  int32_t diff = (Get_EncoderVoltage() * VOLTAGE_FINE_RESOLUTION_MV) - val;
+  
+  // Display the encoder setting unless the difference is 100mV or less
+  if (diff < 100 || diff < -100 || val < VOLTAGE_EQ_INTERCEPT/VOLTAGE_EQ_MULTIPLER)
+  {    
+    val = Get_EncoderVoltage() * VOLTAGE_FINE_RESOLUTION_MV;
+  }
+  
+  // Round value to nearest 10
+  val = (val/10);
+  State_MeasuredVal.outputVoltage = val * 10;  
 }
 
 void Update_OutputCurrent(void)
 {
   uint16_t adcValue = ADC_getReading(I_SENSE_Pin); 
-  State_MeasuredVal.outputCurrent = adcValue;
+  
+  static int32_t adcValueFiltI = 0;  // filtered ADC value
+  
+  if (Get_OutputSwState() == OUT_ENABLE)
+  {
+    adcValueFiltI = (adcValueFiltI << 2) - adcValueFiltI;
+    adcValueFiltI += adcValue;
+    adcValueFiltI = adcValueFiltI >> 2;
+    adcValue = adcValueFiltI;
+  }
+  
+  // Round the Current to the nearest 10mA
+  adcValue = (adcValue/10); 
+  State_MeasuredVal.outputCurrent = adcValue * 10;
 }

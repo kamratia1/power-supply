@@ -89,7 +89,7 @@ void Encoder_IRQ_Callback(void)
   // Set State. Bound the values
   if (encoderVoltage <= 0)                       encoderVoltage = 0;  
   if (encoderVoltage >= NUM_STEPS_VOLTAGE)       encoderVoltage = NUM_STEPS_VOLTAGE;
-  if (encoderCurrent <= 0)                       encoderCurrent = 0;    
+  if (encoderCurrent <= CURRENT_INIT_VALUE)      encoderCurrent = CURRENT_INIT_VALUE;    
   if (encoderCurrent >= NUM_STEPS_CURRENT)       encoderCurrent = NUM_STEPS_CURRENT;
   
   Set_EncoderVoltage(encoderVoltage);
